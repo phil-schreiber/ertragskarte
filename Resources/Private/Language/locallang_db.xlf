@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="de" datatype="plaintext" original="messages" date="2016-11-28T13:03:52Z" product-name="ertragskarte">
+		<header/>
+		<body>
+			<trans-unit id="tx_ertragskarte_domain_model_markers">
+				<source>Markers</source>
+			</trans-unit>
+			<trans-unit id="tx_ertragskarte_domain_model_markers.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_ertragskarte_domain_model_markers.lng">
+				<source>Lng</source>
+			</trans-unit>
+			<trans-unit id="tx_ertragskarte_domain_model_markers.ltd">
+				<source>Ltd</source>
+			</trans-unit>
+			<trans-unit id="tx_ertragskarte_domain_model_markers.place">
+				<source>Place</source>
+			</trans-unit>
+			<trans-unit id="tx_ertragskarte_domain_model_markers.zip">
+				<source>Zip</source>
+			</trans-unit>
+			<trans-unit id="tx_ertragskarte_domain_model_markers.street">
+				<source>Street</source>
+			</trans-unit>
+			<trans-unit id="tx_ertragskarte_domain_model_markers.nr">
+				<source>Nr</source>
+			</trans-unit>
+			<trans-unit id="tx_ertragskarte_domain_model_markers.acreage">
+				<source>Acreage</source>
+			</trans-unit>
+			<trans-unit id="tx_ertragskarte_domain_model_markers.yield">
+				<source>Yield</source>
+			</trans-unit>
+			<trans-unit id="tx_ertragskarte_domain_model_markers.user">
+				<source>User</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

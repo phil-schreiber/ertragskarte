@@ -1,0 +1,45 @@
+
+plugin.tx_ertragskarte_markers {
+	view {
+		templateRootPaths.0 = {$plugin.tx_ertragskarte_markers.view.templateRootPath}
+		partialRootPaths.0 = {$plugin.tx_ertragskarte_markers.view.partialRootPath}
+		layoutRootPaths.0 = {$plugin.tx_ertragskarte_markers.view.layoutRootPath}
+	}
+	persistence {
+		storagePid = {$plugin.tx_ertragskarte_markers.persistence.storagePid}
+	}
+}
+
+plugin.tx_ertragskarte_ertragskarte {
+	view {
+		templateRootPaths.0 = {$plugin.tx_ertragskarte_ertragskarte.view.templateRootPath}
+		partialRootPaths.0 = {$plugin.tx_ertragskarte_ertragskarte.view.partialRootPath}
+		layoutRootPaths.0 = {$plugin.tx_ertragskarte_ertragskarte.view.layoutRootPath}
+	}
+	persistence {
+		storagePid = {$plugin.tx_ertragskarte_ertragskarte.persistence.storagePid}
+	}
+}
+
+
+page.includeJS.file1 = https://maps.googleapis.com/maps/api/js?key=AIzaSyBhhaaDitPwEYgmZGTElQZNLnB_LrSTIpw&libraries=places
+page.includeJS.file2 = EXT:ertragskarte/Resources/Public/JS/jquery-3.1.1.min.js
+page.includeJS.file3 = EXT:ertragskarte/Resources/Public/JS/semantic.js
+page.includeJS.file4 = EXT:ertragskarte/Resources/Public/JS/main.js
+page.includeCSS.file1 = EXT:ertragskarte/Resources/Public/CSS/semantic.css
+page.includeCSS.file2 = EXT:ertragskarte/Resources/Public/CSS/styles.css
+
+ajaxCall = PAGE
+ajaxCall {
+  typeNum = 1234  
+ 
+  config {
+    disableAllHeaderCode = 1
+    xhtml_cleaning = 0
+    admPanel = 0
+    debug = 0
+    no_cache = 1
+  }
+  10 = COA 
+  10 < tt_content.list.20.ertragskarte_ertragskarte 
+}

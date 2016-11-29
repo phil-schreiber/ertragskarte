@@ -1,0 +1,30 @@
+
+plugin.tx_ertragskarte_markers {
+	view {
+		# cat=plugin.tx_ertragskarte_markers/file; type=string; label=Path to template root (FE)
+		templateRootPath = EXT:ertragskarte/Resources/Private/Templates/
+		# cat=plugin.tx_ertragskarte_markers/file; type=string; label=Path to template partials (FE)
+		partialRootPath = EXT:ertragskarte/Resources/Private/Partials/
+		# cat=plugin.tx_ertragskarte_markers/file; type=string; label=Path to template layouts (FE)
+		layoutRootPath = EXT:ertragskarte/Resources/Private/Layouts/
+	}
+	persistence {
+		# cat=plugin.tx_ertragskarte_markers//a; type=string; label=Default storage PID
+		storagePid =
+	}
+}
+
+plugin.tx_ertragskarte_ertragskarte {
+	view {
+		# cat=plugin.tx_ertragskarte_ertragskarte/file; type=string; label=Path to template root (FE)
+		templateRootPath = EXT:ertragskarte/Resources/Private/Templates/
+		# cat=plugin.tx_ertragskarte_ertragskarte/file; type=string; label=Path to template partials (FE)
+		partialRootPath = EXT:ertragskarte/Resources/Private/Partials/
+		# cat=plugin.tx_ertragskarte_ertragskarte/file; type=string; label=Path to template layouts (FE)
+		layoutRootPath = EXT:ertragskarte/Resources/Private/Layouts/
+	}
+	persistence {
+		# cat=plugin.tx_ertragskarte_ertragskarte//a; type=string; label=Default storage PID
+		storagePid =
+	}
+}
