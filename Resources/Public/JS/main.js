@@ -274,6 +274,36 @@ var ertragskarte = (function () {
             
         });
     }
+    
+  var placeMarker = function (location) {
+    jQuery('#newMarkersForm input[name*="[lng]"').val(location.lng());
+    jQuery('#newMarkersForm input[name*="[ltd]"').val(location.lat());
+    jQuery('.ui.modal').modal('show');
+    var marker = new google.maps.Marker({
+        position: location, 
+        map: map
+    });
+    markers.push(marker);
+   }; 
+   
+  var checkVisibleElements = function(elementsArray, bounds) {
+        //checks if marker is within viewport and displays the marker accordingly - triggered by google.maps.event "idle" on the map Object
+        
+        elementsArray.forEach(function (item) {
+            //If the item is within the the bounds of the viewport
+            
+            if (bounds.contains(item.position) && item.display == true) {
+                //If the item isn't already being displayed
+                if (item.map!=map){
+                item.setMap(map);
+                }
+            } else {
+            
+                item.setMap(null);
+            }
+        });
+        //new MarkerClusterer(map, elementsArray, {imagePath: 'images/m'});
+   }; 
   var addSearchListener = function (){
           searchBox.addListener('place_changed', function() {
                 var place = searchBox.getPlace();
@@ -302,37 +332,61 @@ var ertragskarte = (function () {
                 position: myLatLng,
                 map: map,
                 icon: 'home.png'
-              });                           
-        
+              });                                   
         
                 homeMarker.setMap(map);
-                
+                findClosest();
               });
-      };    
+      }; 
+      
+  var addGeneralListener = function(){
+    google.maps.event.addListener(map, 'click', function(event) {
+        
+        placeMarker(event.latLng);
+    });  
+    jQuery("#newMarkersForm").submit(function(e){
+       e.preventDefault();
+       console.log();
+       var url = jQuery(this)[0].action;
+       var formData = jQuery(this).serialize();
+       jQuery.ajax({
+          type        : 'POST',
+          url         : url,
+          data        : formData,
+          encode      : true,
+          success : function(response){
+              console.log(response);
+          },
+          error:function(e){
+              console.log(e);
+          }
+       });
+    });
+  };
   var findClosest = function (){
-          var closestloc;
-                    var smallestSoFar=0;
-          markers.forEach(function(value){
-              
-              if(value.display===true && jQuery.isNumeric(value.position.lat())){                  
-                var distance=Math.round(getHaversineDistance(value.position.lat(),value.position.lng(),myLatLng.lat,myLatLng.lng));                                                
-                        var newLatlng = new google.maps.LatLng(value.position.lat(), value.position.lng());
-                        if(smallestSoFar ===0 || distance< smallestSoFar){
-                            closestloc=newLatlng;
-                            smallestSoFar=distance;
-                        }
-              }
-           
+        var closestloc;
+        var smallestSoFar=0;
+        markers.forEach(function(value){              
+            if(value.display===true && jQuery.isNumeric(value.position.lat())){                  
+              var distance=Math.round(getHaversineDistance(value.position.lat(),value.position.lng(),myLatLng.lat,myLatLng.lng));                                                
+                      var newLatlng = new google.maps.LatLng(value.position.lat(), value.position.lng());
+                      if(smallestSoFar ===0 || distance< smallestSoFar){
+                          closestloc=newLatlng;
+                          smallestSoFar=distance;
+                      }
+            }           
         });
                  
-          var newbounds = new google.maps.LatLngBounds();
+        var newbounds = new google.maps.LatLngBounds();
          
-           newbounds.extend(new google.maps.LatLng(myLatLng.lat, myLatLng.lng));
-           newbounds.extend(closestloc);
-           map.fitBounds(newbounds);
-           
-           map.setZoom(map.getZoom()-1);
-           map.setCenter(newbounds.getCenter());
+        newbounds.extend(new google.maps.LatLng(myLatLng.lat, myLatLng.lng));
+        if(closestloc){
+            newbounds.extend(closestloc);
+        }
+        map.fitBounds(newbounds);
+        
+        map.setZoom(map.getZoom()-1);
+        map.setCenter(newbounds.getCenter());
             
             
             
@@ -358,78 +412,36 @@ var ertragskarte = (function () {
               homeMarker = new google.maps.Marker({
                 position: myLatLng,
                 map: map,
-                icon: 'marker.png'
+                icon: 'typo3conf/ext/ertragskarte/resources/public/images/pin.png'
               });
               jQuery('#localize').show();
-             
+            addSearchListener();
+            addMarkerListener();         
+            addGeneralListener();
           
       };
   var buildItNow = function (){
-            var icon = ['images/marker_baywa.png','images/marker_avia.png','images/marker_star.png'];
-          
-            jQuery.getJSON(list, function(data) {             
-                    listcounter++;
-                    jQuery.each( data, function(i, value) {
-                    
-                        
-                        var distance=Math.round(getHaversineDistance(value[37].pos[0],value[37].pos[1],myLatLng.lat,myLatLng.lng));                                
-                        var newLatlng = new google.maps.LatLng(value[37].pos[0],value[37].pos[1]);
-                        var phone='';
-                        
-                        if(value[15]!=0){
-                            phone='<br>'+value[15];
-                        }
-                        var open='';
-                        if(value[14]!=0){
-                            open='<br>'+value[14];
-                        }
-                        var types='';
-                        var avSprits='';
-                        var avServices='';
-                        var avPaymethods='';
-                        var counter=0;
-                        jQuery.each(filters,function(filterKey,filterVals){
-                            filterVals.forEach(function(el,ind){
-                               
-                                if(value[el]==1){
-                                    types+=el+';'
-                                    if(counter==0){
-                                        avSprits+=columnsHeaders[el]+', ';
-                                    }
-                                    if(counter==1){
-                                        avServices+=columnsHeaders[el]+', ';
-                                    }
-                                    if(counter==2){
-                                        avPaymethods+=columnsHeaders[el]+', ';
-                                    }
-                                }
-                            });
-                            counter++;
-                        });
-                        
-                        var placeAdd=listInd == 0 ? 'BayWa Tankstelle ' : '';                        
-                        var avSpritShow=avSprits.length > 0 ? '' : ' hide';
-                        var avServicesShow=avServices.length > 0 ? '' : ' hide';
-                        var avPaymethodsShow=avPaymethods.length > 0 ? '' : ' hide';
-                        var showStdort= value.url==undefined ? ' hide':'';
+        var icon = 'typo3conf/ext/ertragskarte/resources/public/images/pin.png';
+        
+        jQuery.ajax({
+              dataType: "json",
+                url: "http://localhost/ertragskarte/index.php?id=1&type=3000&no_cache=1&tx_ertragskarte_ertragskarte%5Baction%5D=list&tx_ertragskarte_ertragskarte%5Bcontroller%5D=Ertragskarte",                
+                success: function(data) {                                 
+                    jQuery.each( data, function(i, value) {                                                   
+                        var newLatlng = new google.maps.LatLng(value.ltd,value.lng);                    
                         var image = {
-                            url: icon[listInd],
-                            // This marker is 20 pixels wide by 32 pixels high.
-                            size: new google.maps.Size(80, 80),
-                            scaledSize:new google.maps.Size(40, 40),
-                            // The origin for this image is (0, 0).
-                            origin: new google.maps.Point(0, 0),
-                            // The anchor for this image is the base of the flagpole at (0, 32).
+                            url: icon,                    
+                            size: new google.maps.Size(60, 96),
+                            scaledSize:new google.maps.Size(30, 48),                            
+                            origin: new google.maps.Point(0, 0),                            
                             anchor: new google.maps.Point(20,40)
                           };
                         var marker=new google.maps.Marker({
                         position: newLatlng,
                         map: map,
                         icon: image,
-                        contentfix: '<div><h3>'+placeAdd+value[0]+'</h3><div class="innercontent"><p>'+value[1]+'<br>'+value[2]+' '+value[3]+phone+open+'<br><a href="#" onclick="return false" class="availablesTrigger'+avSpritShow+'"><img src="images/icon-kraftstoff.jpg" width="30" alt=""><span class="availables hide">'+avSprits.substring(0,avSprits.length-2)+'</span></a>&nbsp;<a href="#" onclick="return false" class="availablesTrigger'+avServicesShow+'"><img src="images/icon-service.jpg" width="30" alt=""><span class="availables hide">'+avServices.substring(0,avServices.length-2)+'</span></a>&nbsp;<a href="#" onclick="return false" class="availablesTrigger'+avPaymethodsShow+'"><img src="images/icon-paymethods.jpg" width="30" alt=""><span class="availables hide">'+avPaymethods.substring(0,avPaymethods.length-2)+'</span></a><br><span class="distance from"></span><span>&nbsp;'+distance+' km&nbsp;</span><span class="distance to"></span><br><a href="'+value.url+'" class="navlinks standort'+showStdort+'" target="_blank">Standort</a>',
-                        type:types.substring(0,types.length-1),
-                        display: true,
-                        vendor:listInd+1
+                        contentfix: '<div><h1>test</h1>',                        
+                        display: true                        
                         });
                          markers.push(marker);
                          
@@ -439,7 +451,7 @@ var ertragskarte = (function () {
                             var infoBox = new InfoBox({
                                 latlng: newLatlng,
                                 map: map,
-                                content: marker.contentfix+'<br><a href="https://www.google.com/maps/dir/'+myLatLng.getLat()+','+myLatLng.getLng()+'/'+value[37].pos[0]+','+ value[37].pos[1]+'" target="_blank" class="navlinks">Routenplaner starten</a></p></div></div>'
+                                content: marker.contentfix+'</div>'
 
                             });
                                                       
@@ -459,25 +471,24 @@ var ertragskarte = (function () {
                         }
                         
                             
-                    });
-                    
-                    addMarkerListener();
-                    addSearchListener();
-                    
-                    if(listcounter===icon.length){
-                        findClosest();
-                    }
-                    
-                });
-        }  
+                    });                                        
+                    findClosest();                                        
+                },
+                error:function(e){
+                    console.log(e);
+                }
+        });
+    }
+        
+       
+          
      
   var initialize= function(){
       bounds = new google.maps.LatLngBounds()
       input = jQuery('#pac-input').get(0);
       searchBox = new google.maps.places.Autocomplete(input,searchBoxOptions);
-      addSearchListener();
-      addMarkerListener();                    
-      setHombase();
+      
+      setHombase();      
       buildItNow();
   };
   

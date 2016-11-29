@@ -26,6 +26,20 @@ Ajax click
 <div id="map" style="width:800px;height:800px;">
     
 </div>
+<div class="ui modal">
+    <i class="close icon"></i>
+    <div class="ui header">
+        <div class="header">Möchten Sie einen neuen Ertragsmarker an dieser Stelle setzen?</div>
+    </div>
+    <div class="ui content">
+    <f:flashMessages />
 
+    <f:render partial="FormErrors" arguments="{object:Markers}" />
 
+    <f:form action="create" controller="Markers" name="newMarkers" object="{newMarkers}" class="ui form" id="newMarkersForm" pageType="3010">
+    <f:render partial="Markers/FormFields" />
+            <f:form.submit value="Create new" />
+    </f:form>
+    </div>
+</div>
 </f:section>

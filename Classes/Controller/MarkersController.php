@@ -97,7 +97,9 @@ class MarkersController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function createAction(\Df\Ertragskarte\Domain\Model\Markers $newMarkers)
     {
+        var_dump($this->request->getArguments());
         if(!$GLOBALS['TSFE']->loginUser){
+            echo(0);
             return;
         }
         
@@ -107,7 +109,9 @@ class MarkersController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $this->markersRepository->add($newMarkers);
         $this->addFlashMessage('Der Marker wurde erzeugt', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);        
         
-        $this->redirect('list');
+        //$this->redirect('list');
+        echo(1);
+        die();
     }
     
     /**
