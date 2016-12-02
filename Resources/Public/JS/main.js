@@ -294,7 +294,7 @@ var ertragskarte = (function () {
     markers.push(marker);
    }; 
   var updateAverage = function(){
-      console.log("hier");
+      
       jQuery('#average span').html(Math.round(yieldPartial/acreagePartial*100)/100);
   }
   var checkVisibleElements = function(elementsArray, bounds) {
