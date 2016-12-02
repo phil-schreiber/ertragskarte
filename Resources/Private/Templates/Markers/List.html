@@ -20,17 +20,22 @@ Otherwise your changes will be overwritten the next time you save the extension 
     <div id="average" class="ui header">
         <h2>Durchschnittsertrag Bereichs: <span></span> Tonnen/ha</h2>        
     </div>
-    
+    <div id="legend">
+        <img src="typo3conf/ext/ertragskarte/Resources/Public/images/pin.png" height="20" style="height:20px;width:13px;"> von Nutzern gesetzte Marker<br>
+        <img src="typo3conf/ext/ertragskarte/Resources/Public/images/ownPins.png" height="20" style="height:20px;width:13px;"> Ihre Marker (für eingeloggte Nutzer)<br>
+        <img src="typo3conf/ext/ertragskarte/Resources/Public/images/pinBayWa.png" height="20" style="height:20px;width:13px;"> Marker der BayWa AG<br>
+    </div>
+    <div style="position:relative;">
 <div id="controls">
 <div id="searchBox" class="ui input">
             <input id="pac-input" class="controls" type="text" placeholder="Ort, PLZ oder Straße">
             <span></span>
           </div>
         </div>
-<div id="map" style="width:800px;height:800px;">
+<div id="map" style="width:800px;height:800px;position:absolute;">
         
 </div>
-
+</div>
     <div class="ui modal" id="newMarkersModal">
         <i class="close icon"></i>
         <div class="ui header">

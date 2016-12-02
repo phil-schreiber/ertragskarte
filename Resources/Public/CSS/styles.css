@@ -45,5 +45,16 @@
       }
       
        
-    
-      
+    #controls{
+           background-color:#ececec;
+          padding:0px 20px 20px 20px;
+          position:absolute;
+          z-index: 12;
+          /*box-shadow: 3px 3px 3px 0px #444;*/
+          left:0px;
+          top:0px;
+      }
+      #searchBox{
+        
+        padding-top:10px;
+      }

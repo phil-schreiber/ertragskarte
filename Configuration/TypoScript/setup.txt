@@ -22,12 +22,12 @@ plugin.tx_ertragskarte_ertragskarte {
 }
 
 
-page.includeJS.file1 = https://maps.googleapis.com/maps/api/js?key=AIzaSyBhhaaDitPwEYgmZGTElQZNLnB_LrSTIpw&libraries=places
-page.includeJS.file2 = EXT:ertragskarte/Resources/Public/JS/jquery-3.1.1.min.js
-page.includeJS.file3 = EXT:ertragskarte/Resources/Public/JS/semantic.js
-page.includeJS.file4 = EXT:ertragskarte/Resources/Public/JS/main.js
-page.includeCSS.file1 = EXT:ertragskarte/Resources/Public/CSS/semantic.css
-page.includeCSS.file2 = EXT:ertragskarte/Resources/Public/CSS/styles.css
+page.includeJS.file6 = https://maps.googleapis.com/maps/api/js?key=AIzaSyBhhaaDitPwEYgmZGTElQZNLnB_LrSTIpw&libraries=places
+page.includeJS.file7 = EXT:ertragskarte/Resources/Public/JS/jquery-3.1.1.min.js
+page.includeJS.file8 = EXT:ertragskarte/Resources/Public/JS/semantic.js
+page.includeJS.file9 = EXT:ertragskarte/Resources/Public/JS/main.js
+page.includeCSS.file10 = EXT:ertragskarte/Resources/Public/CSS/semantic.css
+page.includeCSS.file11 = EXT:ertragskarte/Resources/Public/CSS/styles.css
 
 ajaxErtragskarteList = PAGE
 ajaxErtragskarteList {
