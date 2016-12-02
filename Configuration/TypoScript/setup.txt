@@ -55,6 +55,6 @@ ajaxMarkersCreate {
     debug = 0
     no_cache = 1
   }
-  20 = COA 
-  20 < tt_content.create.30.ertragskarte_markers
+  10 = COA 
+  10 < tt_content.list.20.ertragskarte_markers
 }

@@ -13,44 +13,51 @@ in /Configuration/ExtensionBuilder/settings.yaml:
 Otherwise your changes will be overwritten the next time you save the extension in the extension builder
 
 <f:section name="main">
-<h1>Listing for Markers</h1>
 
-<f:flashMessages />
-
-<table  class="tx_ertragskarte" >
-	<tr>
-		<th><f:translate key="tx_ertragskarte_domain_model_markers.title" /></th>
-		<th><f:translate key="tx_ertragskarte_domain_model_markers.lng" /></th>
-		<th><f:translate key="tx_ertragskarte_domain_model_markers.ltd" /></th>
-		<th><f:translate key="tx_ertragskarte_domain_model_markers.place" /></th>
-		<th><f:translate key="tx_ertragskarte_domain_model_markers.zip" /></th>
-		<th><f:translate key="tx_ertragskarte_domain_model_markers.street" /></th>
-		<th><f:translate key="tx_ertragskarte_domain_model_markers.nr" /></th>
-		<th><f:translate key="tx_ertragskarte_domain_model_markers.acreage" /></th>
-		<th><f:translate key="tx_ertragskarte_domain_model_markers.yield" /></th>
-		<th> </th>
-		<th> </th>
-	</tr>
-
-	<f:for each="{markerss}" as="markers">
-		<tr>
-			<td><f:link.action action="show" arguments="{markers : markers}"> {markers.title}</f:link.action></td>
-			<td><f:link.action action="show" arguments="{markers : markers}"> {markers.lng}</f:link.action></td>
-			<td><f:link.action action="show" arguments="{markers : markers}"> {markers.ltd}</f:link.action></td>
-			<td><f:link.action action="show" arguments="{markers : markers}"> {markers.place}</f:link.action></td>
-			<td><f:link.action action="show" arguments="{markers : markers}"> {markers.zip}</f:link.action></td>
-			<td><f:link.action action="show" arguments="{markers : markers}"> {markers.street}</f:link.action></td>
-			<td><f:link.action action="show" arguments="{markers : markers}"> {markers.nr}</f:link.action></td>
-			<td><f:link.action action="show" arguments="{markers : markers}"> {markers.acreage}</f:link.action></td>
-			<td><f:link.action action="show" arguments="{markers : markers}"> {markers.yield}</f:link.action></td>
-			<td><f:link.action action="edit" arguments="{markers : markers}">Edit</f:link.action></td>
-			<td><f:link.action action="delete" arguments="{markers : markers}">Delete</f:link.action></td>
-		</tr>
-	</f:for>
-</table>
-
-<f:link.action action="new">New Markers</f:link.action>
-</f:section>
-<div id="map">
+    <div id="averageTotal" class="ui header">
+        <h2>Durchschnittsertrag Gesamt: <span></span> Tonnen/ha</h2>        
+    </div>
+    <div id="average" class="ui header">
+        <h2>Durchschnittsertrag Bereichs: <span></span> Tonnen/ha</h2>        
+    </div>
     
+<div id="controls">
+<div id="searchBox" class="ui input">
+            <input id="pac-input" class="controls" type="text" placeholder="Ort, PLZ oder Straße">
+            <span></span>
+          </div>
+        </div>
+<div id="map" style="width:800px;height:800px;">
+        
 </div>
+
+    <div class="ui modal" id="newMarkersModal">
+        <i class="close icon"></i>
+        <div class="ui header">
+            <div class="header">Möchten Sie einen neuen Ertragsmarker an dieser Stelle setzen?</div>
+        </div>
+        <div class="ui content">        
+
+        <f:render partial="FormErrors" arguments="{object:Markers}" />
+
+        <f:form action="create" controller="Markers" name="newMarkers" object="{newMarkers}" class="ui form" id="newMarkersForm" pageType="3010">
+        <f:render partial="Markers/FormFields" />
+                <f:form.submit value="Neuen Marker einfügen" />
+        </f:form>
+        </div>
+    </div>
+    <div class="ui modal" id="newMarkersModalSuccess">
+        <i class="close icon"></i>
+        <div class="ui header">
+            <div class="header">Der Marker wurde erfolgreich angelegt.</div>
+        </div>
+    </div>    
+    <div class="ui modal" id="newMarkersModalFailure">
+        <i class="close icon"></i>
+        <div class="ui header">
+            <div class="header">Leider ist ein Problem aufgetreten:</div>
+        </div>
+        <div class="ui content">        </div>
+    </div>    
+</f:section>
+

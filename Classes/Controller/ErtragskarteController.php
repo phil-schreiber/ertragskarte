@@ -56,15 +56,21 @@ class ErtragskarteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
         $this->view->assign('markerss', $markers);
         $markerArray=array();
         foreach($markers as $marker){
+            $marker->curUser=0;
+            if($marker->getUser() && count($GLOBALS['TSFE']->fe_user->user) >0){
+                
+                if($marker->getUser()->getUid()===$GLOBALS['TSFE']->fe_user->user["uid"]){
+                    $marker->curUser=1;
+                }
+            }
             $markerArray[]= json_encode($marker);
-        }
+        }                
+        
         
         if(count($this->request->getArguments()) > 0){
             echo('['.implode(',',$markerArray).']');
             die();
-        }
-        
-        
+        }                
     }
     
     

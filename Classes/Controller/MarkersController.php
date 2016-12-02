@@ -56,14 +56,12 @@ class MarkersController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function listAction()
     {
-        
-        if(count($GLOBALS['TSFE']->fe_user->user) >0){
-            $markers = $this->markersRepository->findByUser($GLOBALS['TSFE']->fe_user->user['uid']);
+        if($GLOBALS['TSFE']->loginUser){             
+           setcookie("checkVal", true);
         }else{
-            $markers = $this->markersRepository->findAll();
+           setcookie("checkVal", false);
         }
         
-        $this->view->assign('markerss', $markers);
     }
     
     /**
@@ -84,9 +82,9 @@ class MarkersController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function newAction()
     {
-         if(!$GLOBALS['TSFE']->loginUser){             
-            return;
-        }
+        
+        
+        
     }
     
     /**
@@ -97,7 +95,7 @@ class MarkersController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function createAction(\Df\Ertragskarte\Domain\Model\Markers $newMarkers)
     {
-        var_dump($this->request->getArguments());
+        
         if(!$GLOBALS['TSFE']->loginUser){
             echo(0);
             return;
@@ -111,7 +109,7 @@ class MarkersController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         
         //$this->redirect('list');
         echo(1);
-        die();
+        
     }
     
     /**

@@ -11,6 +11,11 @@
 var ertragskarte = (function () {
   var input;
   var bounds;
+  var yieldTotal=0;
+  var acreageTotal=0;
+  var yieldPartial=0;
+  var acreagePartial=0;
+  var averageYield=0;
   var searchBoxOptions = {
     componentRestrictions: {country: 'de'}
   };
@@ -150,12 +155,15 @@ var ertragskarte = (function () {
                 //closeBox.innerHTML = "x";
             div.appendChild(closeBox);
 
+           
+            google.maps.event.addDomListener(closeBox, 'click', removeInfoBox(this));
             function removeInfoBox(ib) {
                 return function () {
+                    event.stopPropagation();
+                    event.returnValue.returnValue = false;
                     ib.setMap(null);
                 };
             }
-            google.maps.event.addDomListener(closeBox, 'click', removeInfoBox(this));
             div.appendChild(contentDiv);
             div.style.display = 'none';
             panes.floatPane.appendChild(div);
@@ -243,7 +251,7 @@ var ertragskarte = (function () {
         zoomInButton.style.width = '32px'; 
         zoomInButton.style.height = '32px';
         zoomInButton.style.backgroundColor = '#009650';
-        zoomInButton.style.backgroundImage = 'url("zoominout.png")';
+        zoomInButton.style.backgroundImage = 'url("typo3conf/ext/ertragskarte/Resources/Public/images/zoominout.png")';
         zoomInButton.style.backgroundPosition = '-32px 0px';
         zoomInButton.style.borderColor = '#fff';
         zoomInButton.style.borderWidth = '1px';
@@ -260,7 +268,7 @@ var ertragskarte = (function () {
         zoomOutButton.style.borderWidth = '1px';
         zoomOutButton.style.borderStyle = 'solid';
         /* Change this to be the .png image you want to use */
-        zoomOutButton.style.backgroundImage = 'url("zoominout.png")';
+        zoomOutButton.style.backgroundImage = 'url("typo3conf/ext/ertragskarte/Resources/Public/images/zoominout.png")';
         
         controlWrapper.appendChild(zoomOutButton);
 
@@ -278,30 +286,37 @@ var ertragskarte = (function () {
   var placeMarker = function (location) {
     jQuery('#newMarkersForm input[name*="[lng]"').val(location.lng());
     jQuery('#newMarkersForm input[name*="[ltd]"').val(location.lat());
-    jQuery('.ui.modal').modal('show');
+    jQuery('#newMarkersModal').modal('show');
     var marker = new google.maps.Marker({
         position: location, 
         map: map
     });
     markers.push(marker);
    }; 
-   
+  var updateAverage = function(){
+      console.log("hier");
+      jQuery('#average span').html(Math.round(yieldPartial/acreagePartial*100)/100);
+  }
   var checkVisibleElements = function(elementsArray, bounds) {
         //checks if marker is within viewport and displays the marker accordingly - triggered by google.maps.event "idle" on the map Object
-        
+        yieldPartial=0;
+        acreagePartial=0;
         elementsArray.forEach(function (item) {
             //If the item is within the the bounds of the viewport
             
             if (bounds.contains(item.position) && item.display == true) {
                 //If the item isn't already being displayed
+                yieldPartial += item.yield;
+                acreagePartial += item.acreage;
                 if (item.map!=map){
-                item.setMap(map);
+                item.setMap(map);                
                 }
             } else {
             
                 item.setMap(null);
             }
         });
+        updateAverage();
         //new MarkerClusterer(map, elementsArray, {imagePath: 'images/m'});
    }; 
   var addSearchListener = function (){
@@ -313,7 +328,7 @@ var ertragskarte = (function () {
                }                
                 
                 
-                                homeMarker.setMap(null);
+                  homeMarker.setMap(null);
                 
                   var icon = {
                     url: place.icon,
@@ -335,30 +350,68 @@ var ertragskarte = (function () {
               });                                   
         
                 homeMarker.setMap(map);
-                findClosest();
+                map.setCenter(myLatLng);
               });
       }; 
-      
+  var isLoggedIn = function(){
+        if(!document.cookie){
+            return false;
+        }
+        var checkVal = document.cookie.split(";").filter(function(value){
+            var pair = value.split("=");
+            if(pair[0] == 'checkVal' || value.split("=")[0] == ' checkVal'){                
+                return true;
+            }
+        });
+        
+        if(checkVal.length==0){
+            return false;
+        }
+        
+        return checkVal.every(function(value){
+           if(value.split("=")[1]==1){
+               return true;
+           } 
+        });
+        
+        
+  };
   var addGeneralListener = function(){
     google.maps.event.addListener(map, 'click', function(event) {
+        if(isLoggedIn()){
+            placeMarker(event.latLng);
+        }else{
+            jQuery("#newMarkersModalFailure .content").html("Sie müssen sich anmelden, um Marker setzen zu können.");
+            jQuery("#newMarkersModalFailure").modal('show');
+        }
         
-        placeMarker(event.latLng);
+        
+        
     });  
     jQuery("#newMarkersForm").submit(function(e){
        e.preventDefault();
-       console.log();
+       
        var url = jQuery(this)[0].action;
        var formData = jQuery(this).serialize();
        jQuery.ajax({
           type        : 'POST',
           url         : url,
-          data        : formData,
-          encode      : true,
+          data        : formData,          
           success : function(response){
-              console.log(response);
+              if(response==1){
+              jQuery('.ui.modal').modal('hide');
+              jQuery('#newMarkersModalSuccess').modal('show');
+              }else{
+                jQuery('.ui.modal').modal('hide'); 
+                jQuery("#newMarkersModalFailure .content").html("Sie müssen sich anmelden, um Marker setzen zu können.");
+                jQuery("#newMarkersModalFailure").modal('show');
+              }
           },
           error:function(e){
-              console.log(e);
+              jQuery('.ui.modal').modal('hide');
+              jQuery("#newMarkersModalFailure .content").html(e);
+              jQuery("#newMarkersModalFailure").modal('show');
+              
           }
        });
     });
@@ -405,32 +458,35 @@ var ertragskarte = (function () {
               map.setOptions({styles: mapOptions});
             var zoomControlDiv = document.createElement('div');
             
-              var zoomControl = new ZoomControl(zoomControlDiv, map);
+            var zoomControl = new ZoomControl(zoomControlDiv, map);
 
-              zoomControlDiv.index = 1;
-              map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(zoomControlDiv);
-              homeMarker = new google.maps.Marker({
-                position: myLatLng,
-                map: map,
-                icon: 'typo3conf/ext/ertragskarte/resources/public/images/pin.png'
-              });
-              jQuery('#localize').show();
+            zoomControlDiv.index = 1;
+            map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(zoomControlDiv);
+              
+            jQuery('#localize').show();
             addSearchListener();
             addMarkerListener();         
             addGeneralListener();
           
       };
   var buildItNow = function (){
-        var icon = 'typo3conf/ext/ertragskarte/resources/public/images/pin.png';
+        var icon = ['typo3conf/ext/ertragskarte/resources/public/images/pin.png','typo3conf/ext/ertragskarte/resources/public/images/ownPins.png','typo3conf/ext/ertragskarte/resources/public/images/pinBayWa.png'];
         
         jQuery.ajax({
               dataType: "json",
                 url: "http://localhost/ertragskarte/index.php?id=1&type=3000&no_cache=1&tx_ertragskarte_ertragskarte%5Baction%5D=list&tx_ertragskarte_ertragskarte%5Bcontroller%5D=Ertragskarte",                
-                success: function(data) {                                 
+                success: function(data) {  
+                   
                     jQuery.each( data, function(i, value) {                                                   
-                        var newLatlng = new google.maps.LatLng(value.ltd,value.lng);                    
+                        var newLatlng = new google.maps.LatLng(value.ltd,value.lng);
+                        var curIcon = icon[0];
+                        if(value.curUser==1){
+                            curIcon = icon[1];
+                        }
+                        yieldTotal += value.yield;
+                        acreageTotal += value.acreage;
                         var image = {
-                            url: icon,                    
+                            url: curIcon,                    
                             size: new google.maps.Size(60, 96),
                             scaledSize:new google.maps.Size(30, 48),                            
                             origin: new google.maps.Point(0, 0),                            
@@ -440,10 +496,12 @@ var ertragskarte = (function () {
                         position: newLatlng,
                         map: map,
                         icon: image,
-                        contentfix: '<div><h1>test</h1>',                        
-                        display: true                        
+                        contentfix: '<div class="content"><div><h3>'+value.title+'</h3><div class="innercontent">Fläche: '+value.acreage+'<br>Ertrag: '+value.yield+'</div></div></div>',                        
+                        display: true,
+                        yield:value.yield,
+                        acreage:value.acreage
                         });
-                         markers.push(marker);
+                        markers.push(marker);
                          
                         google.maps.event.addListener(marker, 'click', function (e) {
                             map.setCenter(newLatlng);
@@ -451,7 +509,7 @@ var ertragskarte = (function () {
                             var infoBox = new InfoBox({
                                 latlng: newLatlng,
                                 map: map,
-                                content: marker.contentfix+'</div>'
+                                content: marker.contentfix
 
                             });
                                                       
@@ -459,7 +517,8 @@ var ertragskarte = (function () {
                           
                          
                     });                                     
-                
+                    averageYield = Math.round(yieldTotal/acreageTotal*100)/100;
+                    jQuery('#averageTotal span').html(averageYield);
                     google.maps.event.addListener(map, "idle", function (event) {                                                
                             bounds = map.getBounds();
                             checkVisibleElements(markers, bounds);                        

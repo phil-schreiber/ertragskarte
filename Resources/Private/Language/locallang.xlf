@@ -7,31 +7,31 @@
 				<source>Markers</source>
 			</trans-unit>
 			<trans-unit id="tx_ertragskarte_domain_model_markers.title">
-				<source>Title</source>
+				<source>Titel</source>
 			</trans-unit>
 			<trans-unit id="tx_ertragskarte_domain_model_markers.lng">
-				<source>Lng</source>
+				<source>Längengrad</source>
 			</trans-unit>
 			<trans-unit id="tx_ertragskarte_domain_model_markers.ltd">
-				<source>Ltd</source>
+				<source>Breitengrad</source>
 			</trans-unit>
 			<trans-unit id="tx_ertragskarte_domain_model_markers.place">
-				<source>Place</source>
+				<source>Ort</source>
 			</trans-unit>
 			<trans-unit id="tx_ertragskarte_domain_model_markers.zip">
-				<source>Zip</source>
+				<source>PLZ</source>
 			</trans-unit>
 			<trans-unit id="tx_ertragskarte_domain_model_markers.street">
-				<source>Street</source>
+				<source>Straße</source>
 			</trans-unit>
 			<trans-unit id="tx_ertragskarte_domain_model_markers.nr">
-				<source>Nr</source>
+				<source>Hausnummer</source>
 			</trans-unit>
 			<trans-unit id="tx_ertragskarte_domain_model_markers.acreage">
-				<source>Acreage</source>
+				<source>Flächengröße als Ganzzahl in ha</source>
 			</trans-unit>
 			<trans-unit id="tx_ertragskarte_domain_model_markers.yield">
-				<source>Yield</source>
+				<source>Ertrag als Ganzzahl in Tonnen</source>
 			</trans-unit>
 			<trans-unit id="tx_ertragskarte_domain_model_markers.user">
 				<source>User</source>
