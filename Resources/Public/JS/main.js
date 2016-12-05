@@ -289,7 +289,8 @@ var ertragskarte = (function () {
     jQuery('#newMarkersModal').modal('show');
     var marker = new google.maps.Marker({
         position: location, 
-        map: map
+        map: map,
+        icon: "typo3conf/ext/ertragskarte/Resources/Public/images/yield-icon-own.png"
     });
     markers.push(marker);
    }; 
@@ -470,11 +471,11 @@ var ertragskarte = (function () {
           
       };
   var buildItNow = function (){
-        var icon = ['typo3conf/ext/ertragskarte/resources/public/images/pin.png','typo3conf/ext/ertragskarte/resources/public/images/ownPins.png','typo3conf/ext/ertragskarte/resources/public/images/pinBayWa.png'];
+        var icon = ['typo3conf/ext/ertragskarte/Resources/Public/images/yield-icon-reg.png','typo3conf/ext/ertragskarte/Resources/Public/images/yield-icon-own.png','typo3conf/ext/ertragskarte/Resources/Public/images/yield-icon-baywa.png'];
         
         jQuery.ajax({
               dataType: "json",
-                url: "http://localhost/ertragskarte/index.php?id=1&type=3000&no_cache=1&tx_ertragskarte_ertragskarte%5Baction%5D=list&tx_ertragskarte_ertragskarte%5Bcontroller%5D=Ertragskarte",                
+                url: "http://www.rapsexperten.de/rechnertest/?type=3000&no_cache=1&tx_ertragskarte_ertragskarte%5Baction%5D=list&tx_ertragskarte_ertragskarte%5Bcontroller%5D=Ertragskarte",                
                 success: function(data) {  
                    
                     jQuery.each( data, function(i, value) {                                                   
@@ -482,13 +483,15 @@ var ertragskarte = (function () {
                         var curIcon = icon[0];
                         if(value.curUser==1){
                             curIcon = icon[1];
+                        }else if(value.curUser==-1){
+                            curIcon = icon[2];
                         }
                         yieldTotal += value.yield;
                         acreageTotal += value.acreage;
                         var image = {
                             url: curIcon,                    
-                            size: new google.maps.Size(60, 96),
-                            scaledSize:new google.maps.Size(30, 48),                            
+                            size: new google.maps.Size(80, 80),
+                            scaledSize:new google.maps.Size(40, 40),                            
                             origin: new google.maps.Point(0, 0),                            
                             anchor: new google.maps.Point(20,40)
                           };

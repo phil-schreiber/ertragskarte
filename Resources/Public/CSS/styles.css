@@ -58,3 +58,14 @@
         
         padding-top:10px;
       }
+      
+      .legendImg{
+          height:30px;
+          width:30px;
+          display:inline-block;
+      }
+      
+      .close.icon{
+          background:none;
+          text-indent:0;
+      }

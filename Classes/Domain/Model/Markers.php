@@ -33,6 +33,13 @@ class Markers extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity implements 
 {
 
     /**
+     * cruser_id
+     * 
+     * @var int
+     */
+    protected $cruser_id = 0;
+    
+    /**
      * title
      * 
      * @var string
@@ -289,6 +296,26 @@ class Markers extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity implements 
     public function setYield($yield)
     {
         $this->yield = $yield;
+    }
+    
+    /**
+     * Sets the cruser_id
+     * 
+     * @param int $cruser_id
+     * @return void
+     */
+    public function setCruser_id($cruser_id){
+        $this->cruser_id = $cruser_id;
+    }
+    
+    /**
+     * Get the cruser_id
+     * 
+     * @retun int
+     */
+    
+    public function getCruser_id(){
+        return $this->cruser_id;
     }
     
     /**

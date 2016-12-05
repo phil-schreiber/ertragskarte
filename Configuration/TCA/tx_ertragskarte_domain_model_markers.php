@@ -23,7 +23,7 @@ return array(
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('ertragskarte') . 'Resources/Public/Icons/tx_ertragskarte_domain_model_markers.gif'
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, title, lng, ltd, place, zip, street, nr, acreage, yield, user',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, cruser_id, hidden, title, lng, ltd, place, zip, street, nr, acreage, yield, user',
 	),
 	'types' => array(
 		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title, lng, ltd, place, zip, street, nr, acreage, yield, user, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'),
@@ -75,7 +75,21 @@ return array(
 				'max' => 255,
 			)
 		),
-	
+             'tstamp' => array(
+			'exclude' => 1,
+			'label' => 'tstamp',
+			'config' => array(
+				'type' => 'none',
+			),
+		),
+            
+                'cruser_id' => array(
+			'exclude' => 1,
+			'label' => 'cruserid',
+			'config' => array(
+				'type' => 'none',
+			),
+		),
 		'hidden' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
@@ -202,10 +216,14 @@ return array(
 			'label' => 'LLL:EXT:ertragskarte/Resources/Private/Language/locallang_db.xlf:tx_ertragskarte_domain_model_markers.user',
 			'config' => array(
 				'type' => 'select',
+                                'items' => array (
+                                    array('BayWa eigener Punkt',0),
+                                ),
 				'renderType' => 'selectSingle',
 				'foreign_table' => 'fe_users',
 				'minitems' => 0,
 				'maxitems' => 1,
+                                
 			),
 		),
 		

@@ -1,4 +1,6 @@
 
+
+
 plugin.tx_ertragskarte_markers {
 	view {
 		templateRootPaths.0 = {$plugin.tx_ertragskarte_markers.view.templateRootPath}
