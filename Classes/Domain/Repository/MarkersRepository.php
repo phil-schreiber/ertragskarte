@@ -31,6 +31,22 @@ namespace Df\Ertragskarte\Domain\Repository;
  */
 class MarkersRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
+    public function aggregateMarkers(){
+        
+        $query = $this->createQuery();
+        
+        $storagePids = $query->getQuerySettings()->getStoragePageIds();
+        
+        $sql = 'SELECT SUM(markers.yield) AS yield, SUM(markers.acreage) AS acreage, regions.title, regions.ltd, regions.lng '
+                . 'FROM tx_ertragskarte_domain_model_markers AS markers '
+                . 'LEFT JOIN tx_ertragskarte_domain_model_regions_zipcodes_mm AS lookup ON markers.zip = lookup.uid_foreign '
+                . 'LEFT JOIN tx_ertragskarte_domain_model_regions AS regions on regions.uid=lookup.uid_local '
+                . 'WHERE markers.pid IN ('.implode(',',$storagePids).') AND markers.zip <> 0 GROUP BY regions.uid';
+        $query->statement($sql);
 
+        $result = $query->execute(true);
+        
+        return $result;
+    }
     
 }

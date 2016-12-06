@@ -40,7 +40,38 @@ class ErtragskarteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
      */
     protected $markersRepository = NULL;
     
-   
+    
+    /**
+     * action aggregate
+     * 
+     * @return void
+     */
+    public function aggregateAction(){         
+        $markers = $this->markersRepository->findAll();
+        $aggregateMarkers = $this->markersRepository->aggregateMarkers();
+        $this->view->assign('markerss', $markers);
+        $markerArray=array();
+        foreach($markers as $marker){            
+            $marker->curUser=0;
+            if(!$marker->getUser()){
+                $marker->curUser=-1;                
+                $markerArray[]= json_encode($marker);                
+            }                        
+        }    
+        
+        foreach($aggregateMarkers as $aggregateMarker){
+            if($aggregateMarker["ltd"] != ""){
+                $aggregateMarker->curUser=0;
+                $markerArray[]= json_encode($aggregateMarker);                
+            }
+        }
+                
+        if(count($this->request->getArguments()) > 0){
+            echo('['.implode(',',$markerArray).']');
+            die();
+        }      
+    }
+    
     /**
      * action list
      * 

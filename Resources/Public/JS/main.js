@@ -9,6 +9,8 @@
 
 
 var ertragskarte = (function () {
+  var debug = false;
+  var listUrl = ["http://localhost/ertragskarte/index.php?id=1&type=3000&no_cache=1&tx_ertragskarte_ertragskarte%5Baction%5D=aggregate&tx_ertragskarte_ertragskarte%5Bcontroller%5D=Ertragskarte","http://www.rapsexperten.de/rechnertest/?type=3000&no_cache=1&tx_ertragskarte_ertragskarte%5Baction%5D=aggregate&tx_ertragskarte_ertragskarte%5Bcontroller%5D=Ertragskarte"];
   var input;
   var bounds;
   var yieldTotal=0;
@@ -160,7 +162,7 @@ var ertragskarte = (function () {
             function removeInfoBox(ib) {
                 return function () {
                     event.stopPropagation();
-                    event.returnValue.returnValue = false;
+                    event.returnValue = false;
                     ib.setMap(null);
                 };
             }
@@ -286,13 +288,33 @@ var ertragskarte = (function () {
   var placeMarker = function (location) {
     jQuery('#newMarkersForm input[name*="[lng]"').val(location.lng());
     jQuery('#newMarkersForm input[name*="[ltd]"').val(location.lat());
-    jQuery('#newMarkersModal').modal('show');
-    var marker = new google.maps.Marker({
-        position: location, 
-        map: map,
-        icon: "typo3conf/ext/ertragskarte/Resources/Public/images/yield-icon-own.png"
+    jQuery.ajax({
+       type:'POST',
+       dataType: 'JSON',
+       url:'https://maps.googleapis.com/maps/api/geocode/json?latlng='+location.lat()+','+location.lng()+'&key=AIzaSyBhhaaDitPwEYgmZGTElQZNLnB_LrSTIpw',
+       success:function(data){
+           if(data){
+               var plz = data.results[0].address_components.filter(function(val){
+                  if(val.types[0]=="postal_code"){
+                      return true;
+                  }
+               });
+               jQuery('#newMarkersForm input[name*="[zip]"]').val(plz[0].long_name);
+               
+           }
+           
+           
+           jQuery('#newMarkersModal').modal('show');
+            var marker = new google.maps.Marker({
+                position: location, 
+                map: map,
+                icon: "typo3conf/ext/ertragskarte/Resources/Public/images/yield-icon-own.png"
+            });
+            markers.push(marker);
+       }
     });
-    markers.push(marker);
+    
+    
    }; 
   var updateAverage = function(){
       
@@ -475,7 +497,7 @@ var ertragskarte = (function () {
         
         jQuery.ajax({
               dataType: "json",
-                url: "http://www.rapsexperten.de/rechnertest/?type=3000&no_cache=1&tx_ertragskarte_ertragskarte%5Baction%5D=list&tx_ertragskarte_ertragskarte%5Bcontroller%5D=Ertragskarte",                
+                url: debug ? listUrl[0] : listUrl[1],                
                 success: function(data) {  
                    
                     jQuery.each( data, function(i, value) {                                                   
@@ -499,25 +521,28 @@ var ertragskarte = (function () {
                         position: newLatlng,
                         map: map,
                         icon: image,
-                        contentfix: '<div class="content"><div><h3>'+value.title+'</h3><div class="innercontent">Fläche: '+value.acreage+'<br>Ertrag: '+value.yield+'</div></div></div>',                        
+                        contentfix: '<div class="content"><div><h3>'+value.title+'</h3><div class="innercontent"><strong>durchschnittl. Ertrag: '+Math.round((value.yield/value.acreage)*100)/100+' Tonnen/ha</strong><br></div></div></div>',                        
                         display: true,
                         yield:value.yield,
                         acreage:value.acreage
                         });
                         markers.push(marker);
-                         
-                        google.maps.event.addListener(marker, 'click', function (e) {
-                            map.setCenter(newLatlng);
+                        var markerEvent =  function (e) {
+                            //map.setCenter(newLatlng);
                             jQuery('.infobox').remove();
                             var infoBox = new InfoBox({
                                 latlng: newLatlng,
                                 map: map,
                                 content: marker.contentfix
 
-                            });
-                                                      
-                          });
-                          
+                            }); 
+                            };
+                        google.maps.event.addListener(marker, 'click',
+                             markerEvent
+                          );
+                        google.maps.event.addListener(marker, 'mouseover',
+                             markerEvent
+                          );  
                          
                     });                                     
                     averageYield = Math.round(yieldTotal/acreageTotal*100)/100;

@@ -21,12 +21,12 @@ if (!defined('TYPO3_MODE')) {
 	'Df.' . $_EXTKEY,
 	'Ertragskarte',
 	array(
-		'Ertragskarte' => 'list, show',
+		'Ertragskarte' => 'list, show, aggregate',
 		
 	),
 	// non-cacheable actions
 	array(
-		'Ertragskarte' => 'list'
+		'Ertragskarte' => 'list, aggregate'
 		
 	)
 );
