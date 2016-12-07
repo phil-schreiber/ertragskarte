@@ -86,7 +86,24 @@ class MarkersController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         
         
     }
-    
+    /**
+    * initialize create action
+    *
+    * @return void
+    */
+   public function initializeCreateAction() {
+       
+     if ($this->arguments->hasArgument('newMarkers')) {
+        
+        
+       $this->arguments->getArgument('newMarkers')->getPropertyMappingConfiguration()->allowProperties('acreage');
+       $this->arguments->getArgument('newMarkers')->getPropertyMappingConfiguration()->allowProperties('yield');
+       $this->arguments->getArgument('newMarkers')->getPropertyMappingConfiguration()->setTargetTypeForSubProperty('acreage', 'int');
+       $this->arguments->getArgument('newMarkers')->getPropertyMappingConfiguration()->setTargetTypeForSubProperty('yield', 'int');
+     }
+     
+     
+   }
     /**
      * action create
      * 
@@ -100,6 +117,9 @@ class MarkersController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             echo(0);
             return;
         }
+        
+        $newMarkers->setAcreage(intval($this->request->getArgument('newMarkers')['acreage']*100));
+        $newMarkers->setYield(intval($this->request->getArgument('newMarkers')['yield']*100));
         
         $userObject = $this->userRepository->findByUid($GLOBALS['TSFE']->fe_user->user['uid']);        
         $newMarkers->setUser($userObject);

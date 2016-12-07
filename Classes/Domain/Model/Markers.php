@@ -351,4 +351,6 @@ class Markers extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity implements 
         }
         return $json; 
     }
+    
+    
 }

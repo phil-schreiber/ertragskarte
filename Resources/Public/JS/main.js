@@ -9,7 +9,7 @@
 
 
 var ertragskarte = (function () {
-  var debug = false;
+  var debug = true;
   var listUrl = ["http://localhost/ertragskarte/index.php?id=1&type=3000&no_cache=1&tx_ertragskarte_ertragskarte%5Baction%5D=aggregate&tx_ertragskarte_ertragskarte%5Bcontroller%5D=Ertragskarte","http://www.rapsexperten.de/rechnertest/?type=3000&no_cache=1&tx_ertragskarte_ertragskarte%5Baction%5D=aggregate&tx_ertragskarte_ertragskarte%5Bcontroller%5D=Ertragskarte"];
   var input;
   var bounds;
@@ -508,8 +508,8 @@ var ertragskarte = (function () {
                         }else if(value.curUser==-1){
                             curIcon = icon[2];
                         }
-                        yieldTotal += value.yield;
-                        acreageTotal += value.acreage;
+                        yieldTotal += value.yield/100;
+                        acreageTotal += value.acreage/100;
                         var image = {
                             url: curIcon,                    
                             size: new google.maps.Size(80, 80),
@@ -521,10 +521,10 @@ var ertragskarte = (function () {
                         position: newLatlng,
                         map: map,
                         icon: image,
-                        contentfix: '<div class="content"><div><h3>'+value.title+'</h3><div class="innercontent"><strong>durchschnittl. Ertrag: '+Math.round((value.yield/value.acreage)*100)/100+' Tonnen/ha</strong><br></div></div></div>',                        
+                        contentfix: '<div class="content"><div><h3>'+value.title+'</h3><div class="innercontent"><strong>durchschnittl. Ertrag: '+Math.round(((value.yield/100)/(value.acreage/100))*100)/100+' dt/ha</strong><br></div></div></div>',                        
                         display: true,
-                        yield:value.yield,
-                        acreage:value.acreage
+                        yield:value.yield/100,
+                        acreage:value.acreage/100
                         });
                         markers.push(marker);
                         var markerEvent =  function (e) {
