@@ -53,7 +53,13 @@ class ErtragskarteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
         $markerArray=array();
         foreach($markers as $marker){            
             $marker->curUser=0;
-            if(!$marker->getUser()){
+            $usergroupIds=array();
+            $usergroups=$marker->getUser()->getUsergroup();
+            foreach($usergroups as $usergroup){
+                $usergroupIds[] = $usergroup->getUid();                
+            }            
+            
+            if(in_array($this->settings['homeUserGroupId'], $usergroupIds)){
                 $marker->curUser=-1;                
                 $markerArray[]= json_encode($marker);                
             }                        

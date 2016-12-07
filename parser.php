@@ -53,7 +53,7 @@ class parser {
         $returnVal=false;
 
         // Get JSON results from this request
-        $geo = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.rawurlencode($address).'&sensor=false&components=country:DE&key=AIzaSyBhhaaDitPwEYgmZGTElQZNLnB_LrSTIpw');
+        $geo = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?address='.urlencode($address).'&sensor=false&components=country:DE&key=AIzaSyBhhaaDitPwEYgmZGTElQZNLnB_LrSTIpw');
         
         // Convert the JSON to an array
         $geo = json_decode($geo, true);
@@ -81,18 +81,15 @@ class importer{
         
         $json = file_get_contents("locs.json");
         $arr=json_decode($json);
-        
-        foreach($arr as $key => $val){
-            
+        $sqls="";
+        foreach($arr as $key => $val){            
             if($val[1]->pos){
-                $sql="UPDATE tx_ertragskarte_domain_model_regions SET lng=".$val[1]->pos[1].",ltd=".$val[1]->pos[0]." WHERE title LIKE '".$val[0]."'";
-                
-                $result=mysqli_query($con,$sql);
-            }
-            
-
-            
+                $sql="UPDATE tx_ertragskarte_domain_model_regions SET lng=".$val[1]->pos[1].",ltd=".$val[1]->pos[0]." WHERE title LIKE '".$val[0]."'";                
+                $result=mysqli_query($con,$sql);                
+                $sqls  .=$sql.';';
+            }            
         }
+        echo($sqls);
     }
 }
 
