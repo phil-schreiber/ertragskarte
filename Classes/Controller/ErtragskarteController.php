@@ -49,6 +49,7 @@ class ErtragskarteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
     public function aggregateAction(){         
         $markers = $this->markersRepository->findAll();
         $aggregateMarkers = $this->markersRepository->aggregateMarkers();
+        
         $this->view->assign('markerss', $markers);
         $markerArray=array();
         foreach($markers as $marker){            
