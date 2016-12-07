@@ -69,3 +69,21 @@
           background:none;
           text-indent:0;
       }
+      
+      
+      .resultButton{
+        background: #4183C4;
+        color: #fff;
+        padding: 5px;
+        border: #E5E5E5 1px solid;
+        text-align: center;
+        width:192px;
+      }
+      .resultHeader{
+          float:left;
+      }
+      
+      .resultHeader:first-of-type{
+          margin-right:20px;
+      }
+      

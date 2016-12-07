@@ -14,15 +14,16 @@ Otherwise your changes will be overwritten the next time you save the extension 
 
 <f:section name="main">
 
-    <div id="averageTotal" class="ui header">
-        <h2>Durchschnittsertrag Gesamt: <span></span> Tonnen/ha</h2>        
+    <div id="averageTotal" class="resultHeader">
+        <h3>Durchschnittsertrag Gesamt:</h3><div class="resultButton"><span></span> Tonnen/ha</div><br>        
     </div>
-    <div id="average" class="ui header">
-        <h2>Durchschnittsertrag Bereichs: <span></span> Tonnen/ha</h2>        
+    <div id="average" class="resultHeader">
+        <h3>Durchschnittsertrag des sichtbaren Bereichs:</h3><div class="resultButton"><span></span> Tonnen/ha</div><br>
     </div>
-    <div id="legend">
+    
+    <div id="legend" style="clear:both;">
         <img src="typo3conf/ext/ertragskarte/Resources/Public/images/yield-icon-reg.png"  class="legendImg"> von Nutzern gesetzte Marker | 
-        <img src="typo3conf/ext/ertragskarte/Resources/Public/images/yield-icon-own.png"  class="legendImg"> Ihre Marker (für eingeloggte Nutzer) | 
+        <img src="typo3conf/ext/ertragskarte/Resources/Public/images/yield-icon-own.png"  class="legendImg"> Ihre Marker (nur beim Setzen sichtbar) | 
         <img src="typo3conf/ext/ertragskarte/Resources/Public/images/yield-icon-baywa.png"  class="legendImg"> Marker der BayWa AG<br>
     </div>
     <div style="position:relative;width:800px;height:800px">
