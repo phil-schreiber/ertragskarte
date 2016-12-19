@@ -1,0 +1,69 @@
+
+
+
+<div class="frm-row">
+                                    
+                                    
+                                    
+                                    
+                                    <div class="section colm colm12">
+                                      <label class="field select">
+                                                <select name="tx_ertragskarte_markers[newMarkers][title]" class="delivery_field" id="tx_ertragskarte_markers_title" >
+                                                    <option value="">RGT PLANET</option>
+<option  value="GRACE">GRACE</option>
+<option  value="STEFFI">STEFFI</option>
+<option  value="Marthe">Marthe</option>
+<option  value="Avalon">Avalon</option>
+<option  value="Quench">Quench</option>
+<option  value="Propino">Propino</option>
+<option  value="Ventina">Ventina</option>
+<option  value="Solist">Solist</option>
+<option  value="Catamaran">Catamaran</option>
+<option  value="Cervinia">Cervinia</option>
+<option  value="Ventina">Ventina</option>
+                                                </select>
+                                              
+                                                
+                                                <i class="arrow double"></i>                             
+                                      </label>
+                                    </div><!-- end section -->
+                                    
+                                
+                              </div>
+
+<label for="title">
+	<f:translate key="tx_ertragskarte_domain_model_markers.title" />
+</label><br />
+	<f:form.textfield property="title" /><br />
+<label for="lng">
+	<f:translate key="tx_ertragskarte_domain_model_markers.lng" />
+</label><br />
+	<f:form.textfield property="lng" /><br />
+<label for="ltd">
+	<f:translate key="tx_ertragskarte_domain_model_markers.ltd" />
+</label><br />
+	<f:form.textfield property="ltd" /><br />
+<label for="place">
+	<f:translate key="tx_ertragskarte_domain_model_markers.place" />
+</label><br />
+	<f:form.textfield property="place" /><br />
+<label for="zip">
+	<f:translate key="tx_ertragskarte_domain_model_markers.zip" />
+</label><br />
+	<f:form.textfield property="zip" /><br />
+<label for="street">
+	<f:translate key="tx_ertragskarte_domain_model_markers.street" />
+</label><br />
+	<f:form.textfield property="street" /><br />
+<label for="nr">
+	<f:translate key="tx_ertragskarte_domain_model_markers.nr" />
+</label><br />
+	<f:form.textfield property="nr" /><br />
+<label for="acreage">
+	<f:translate key="tx_ertragskarte_domain_model_markers.acreage" />
+</label><br />
+	<f:form.textfield property="acreage" /><br />
+<label for="yield">
+	<f:translate key="tx_ertragskarte_domain_model_markers.yield" />
+</label><br />
+	<f:form.textfield property="yield" /><br />

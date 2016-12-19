@@ -10,7 +10,7 @@
 
 var ertragskarte = (function () {
   var debug = false;
-  var listUrl = ["http://localhost/ertragskarte/index.php?id=1&type=3000&no_cache=1&tx_ertragskarte_ertragskarte%5Baction%5D=aggregate&tx_ertragskarte_ertragskarte%5Bcontroller%5D=Ertragskarte","http://www.rapsexperten.de/index.php?id=57&type=3000&no_cache=1&tx_ertragskarte_ertragskarte%5Baction%5D=aggregate&tx_ertragskarte_ertragskarte%5Bcontroller%5D=Ertragskarte"];
+  var listUrl = ["http://localhost/ertragskarte/index.php?id=1&type=3000&no_cache=1&tx_ertragskarte_ertragskarte%5Baction%5D=aggregate&tx_ertragskarte_ertragskarte%5Bcontroller%5D=Ertragskarte","http://probieren.denkfabrik-entwicklung.de/index.php?id=57&type=3000&no_cache=1&tx_ertragskarte_ertragskarte%5Baction%5D=aggregate&tx_ertragskarte_ertragskarte%5Bcontroller%5D=Ertragskarte"];
   var input;
   var bounds;
   var yieldTotal=0;
@@ -91,8 +91,19 @@ var ertragskarte = (function () {
         this.content = opts.content;
         this.offsetVertical_ = -35;
         this.offsetHorizontal_ = 5;
-        this.height_ = 210;
-        this.width_ = 266;
+		
+		if(this.content.indexOf('table') >= 0){
+			this.width_ = 500;
+			this.height_ = 380;
+		}else{
+			this.width_ = 300;
+			this.height_ = 280;
+		}
+		
+		
+		
+        
+		
         var me = this;
         this.boundsChangedListener_ =
             google.maps.event.addListener(this.map_, "bounds_changed", function () {
@@ -299,8 +310,7 @@ var ertragskarte = (function () {
                       return true;
                   }
                });
-               jQuery('#newMarkersForm input[name*="[zip]"]').val(plz[0].long_name);
-               
+                
            }
            
            
@@ -316,10 +326,7 @@ var ertragskarte = (function () {
     
     
    }; 
-  var updateAverage = function(){
-      
-      jQuery('#average span').html(Math.round(yieldPartial/acreagePartial*100)/100);
-  }
+ 
   var checkVisibleElements = function(elementsArray, bounds) {
         //checks if marker is within viewport and displays the marker accordingly - triggered by google.maps.event "idle" on the map Object
         yieldPartial=0;
@@ -339,7 +346,7 @@ var ertragskarte = (function () {
                 item.setMap(null);
             }
         });
-        updateAverage();
+      
         //new MarkerClusterer(map, elementsArray, {imagePath: 'images/m'});
    }; 
   var addSearchListener = function (){
@@ -378,7 +385,7 @@ var ertragskarte = (function () {
       }; 
   var isLoggedIn = function(){
         if(!document.cookie){
-            return false;
+          return false;
         }
         var checkVal = document.cookie.split(";").filter(function(value){
             var pair = value.split("=");
@@ -401,12 +408,12 @@ var ertragskarte = (function () {
   };
   var addGeneralListener = function(){
     google.maps.event.addListener(map, 'click', function(event) {
-        if(isLoggedIn()){
+        //if(isLoggedIn()){
             placeMarker(event.latLng);
-        }else{
-            jQuery("#newMarkersModalFailure .content").html("Sie müssen sich anmelden, um Marker setzen zu können.");
-            jQuery("#newMarkersModalFailure").modal('show');
-        }
+        //}else{
+          //jQuery("#newMarkersModalFailure .content").html("Sie müssen sich anmelden, um Marker setzen zu können.");
+          //jQuery("#newMarkersModalFailure").modal('show');
+        //}
         
         
         
@@ -414,30 +421,156 @@ var ertragskarte = (function () {
     jQuery("#newMarkersForm").submit(function(e){
        e.preventDefault();
        
+		
+		
        var url = jQuery(this)[0].action;
+	   var disabled = jQuery(this).find(':input:disabled').removeAttr('disabled');
+
+	 
+		
        var formData = jQuery(this).serialize();
-       jQuery.ajax({
-          type        : 'POST',
-          url         : url,
-          data        : formData,          
-          success : function(response){
-              if(response==1){
-              jQuery('.ui.modal').modal('hide');
-              jQuery('#newMarkersModalSuccess').modal('show');
-              }else{
-                jQuery('.ui.modal').modal('hide'); 
-                jQuery("#newMarkersModalFailure .content").html("Sie müssen sich anmelden, um Marker setzen zu können.");
-                jQuery("#newMarkersModalFailure").modal('show');
-              }
-          },
-          error:function(e){
-              jQuery('.ui.modal').modal('hide');
-              jQuery("#newMarkersModalFailure .content").html(e);
-              jQuery("#newMarkersModalFailure").modal('show');
-              
-          }
-       });
+		// re-disabled the set of inputs that you previously enabled
+		disabled.attr('disabled','disabled');
+		
+	   var form = $(this);
+		
+		if(form.valid()){
+		
+			   jQuery.ajax({
+				  type        : 'POST',
+				  url         : url,
+				  data        : formData,          
+				  success : function(response){
+					  if(response==1){
+					  jQuery('.ui.modal').modal('hide');
+					  jQuery('#newMarkersModalSuccess').modal('show');
+					  }else{
+						jQuery('.ui.modal').modal('hide'); 
+						jQuery("#newMarkersModalFailure .content").html("Sie müssen sich anmelden, um Marker setzen zu können.");
+						jQuery("#newMarkersModalFailure").modal('show');
+					  }
+				  },
+				  error:function(e){
+					  jQuery('.ui.modal').modal('hide');
+					  jQuery("#newMarkersModalFailure .content").html(e);
+					  jQuery("#newMarkersModalFailure").modal('show');
+
+				  }
+			   });
+			
+			}
     });
+	 
+	 jQuery('#newMarkersForm input[name*="[newsletter]"][type="hidden"]').remove();
+	  jQuery('#newMarkersForm input[name*="[terms]"][type="hidden"]').remove();
+	  
+	 jQuery("#newMarkersForm").validate({
+				errorClass: "state-error",
+				validClass: "state-success",
+				errorElement: "em",
+				onkeyup: false,
+				onclick: false,
+				rules: {
+					"tx_ertragskarte_markers[newMarkers][title]": {
+						required: true
+					},
+					"tx_ertragskarte_markers[newMarkers][zip]": {
+						required: true,
+						number:true
+					},
+					"tx_ertragskarte_markers[newMarkers][acreage]": {
+						required: true,
+						number:true
+					},
+					"tx_ertragskarte_markers[newMarkers][yield]": {
+						required: true,
+						number:true
+					},
+					"tx_ertragskarte_markers[newMarkers][firstname]":{
+						required: true
+					},
+					"tx_ertragskarte_markers[newMarkers][lastname]":{
+						required: true
+					},
+					"tx_ertragskarte_markers[newMarkers][terms]":{
+						required: true
+					},
+					"tx_ertragskarte_markers[newMarkers][email]":{
+						required: true,
+						email:true
+					},
+					"tx_ertragskarte_markers[newMarkers][street]":{
+						required: true
+					},
+					"tx_ertragskarte_markers[newMarkers][zip]":{
+						required: true
+					},
+					"tx_ertragskarte_markers[newMarkers][place]":{
+						required: true
+					}
+					
+				},
+				messages: {
+					"tx_ertragskarte_markers[title]": {
+						required: "Bitte wählen Sie eine Sorte aus"
+					},
+					"tx_ertragskarte_markers[newMarkers][zip]": {
+						required: "Bitte geben Sie Ihre Postleitzahl ein",
+						number:"Bitte geben Sie nur Zahlen bei der Postleitzahl ein"
+					},
+					"tx_ertragskarte_markers[newMarkers][acreage]": {
+						required: "Bitte geben Sie die Fläche an",
+						number:"Bitte geben Sie nur ganze Zahlen an, z.B. 20"
+					},
+					"tx_ertragskarte_markers[newMarkers][yield]": {
+						required: "Bitte geben Sie den Ertrag an",
+						number:"Bitte geben Sie nur ganze Zahlen an, z.B. 20"
+					},
+					"tx_ertragskarte_markers[newMarkers][firstname]":{
+						required: "Bitte geben Sie Ihren Vorname an"
+					},
+					"tx_ertragskarte_markers[newMarkers][lastname]":{
+						required: "Bitte geben Sie Ihren Nachnamen an"
+					},
+					"tx_ertragskarte_markers[newMarkers][terms]":{
+						required: "Sie müssen den Datenschutz- und Teilnahmebedingungen zustimmen, um beim Gewinnspiel mitmachen zu können"
+					},
+					"tx_ertragskarte_markers[newMarkers][email]":{
+						required: "Bitte geben Sie Ihre E-Mail-Adresse an",
+						email:"Bitte geben Sie eine gültige E-Mail-Adresse an"
+					},
+					"tx_ertragskarte_markers[newMarkers][street]":{
+						required: "Bitte geben Sie Straße und Hausnummer an"
+					},
+					"tx_ertragskarte_markers[newMarkers][zip]":{
+						required: "Bitte geben Sie Ihre Postleitzahl an"
+					},
+					"tx_ertragskarte_markers[newMarkers][place]":{
+						required: "Bitte geben Sie Ihren Ort an"
+					}
+				},
+				highlight: function(element, errorClass, validClass) {
+					$(element).closest('.field, .option-group').addClass(errorClass).removeClass(validClass);
+				},
+				unhighlight: function(element, errorClass, validClass) {
+					$(element).closest('.field, .option-group').removeClass(errorClass).addClass(validClass);
+					
+					if ($(element).is(":radio") || $(element).is(":checkbox")) {
+						
+						$(element).closest('.option-group').next('.error-state').remove();	
+					}
+				},
+				errorPlacement: function(error, element) {
+					if (element.is(":radio") || element.is(":checkbox")) {
+						element.closest('.option-group').after(error);
+					} else {
+						error.insertAfter(element.parent());
+					}
+				}
+			
+			})  
+    	  
+	  
   };
   var findClosest = function (){
         var closestloc;
@@ -493,39 +626,131 @@ var ertragskarte = (function () {
           
       };
   var buildItNow = function (){
-        var icon = ['typo3conf/ext/ertragskarte/Resources/Public/images/yield-icon-reg.png','typo3conf/ext/ertragskarte/Resources/Public/images/yield-icon-own.png','typo3conf/ext/ertragskarte/Resources/Public/images/yield-icon-baywa.png'];
+        var icon =['typo3conf/ext/ertragskarte/Resources/Public/images/icon_rgt.png','typo3conf/ext/ertragskarte/Resources/Public/images/icon_lsv.png','typo3conf/ext/ertragskarte/Resources/Public/images/icon_baywa.png','typo3conf/ext/ertragskarte/Resources/Public/images/icon_andere.png'];
         
         jQuery.ajax({
               dataType: "json",
                 url: debug ? listUrl[0] : listUrl[1],                
                 success: function(data) {  
                    
-                    jQuery.each( data, function(i, value) {                                                   
+					var lookupArray = { 
+						lsvrgt: 'RGT PLANET - LSV-Ergebnis',
+						rgtplanet: 'RGT PLANET', 
+						grace:'GRACE',
+						steffi:'STEFFI',						
+						marthe:'Marthe',						
+						avalon:'Avalon',
+						quench:'Quench',
+						propino:'Propino',
+						ventina:'Ventina',
+						solist:'Solist',
+						catamaran:'Catamaran',
+						cervinia:'Cervinia',
+						sonstige:'Sonstige'
+					};
+					
+					
+                    jQuery.each( data, function(i, value) {
+						
+		
+						
                         var newLatlng = new google.maps.LatLng(value.ltd,value.lng);
-                        var curIcon = icon[0];
-                        if(value.curUser==1){
+						
+                        var curIcon = icon[3];
+				
+                        if(value.markertitle=='lsvrgt'){
                             curIcon = icon[1];
-                        }else if(value.curUser==-1){
+                        }else if(value.markertitle =='steffi' || value.markertitle =='grace' || value.markertitle =='rgtplanet'){
                             curIcon = icon[2];
                         }
-                        yieldTotal += value.yield/100;
-                        acreageTotal += value.acreage/100;
-                        var image = {
-                            url: curIcon,                    
-                            size: new google.maps.Size(80, 80),
-                            scaledSize:new google.maps.Size(40, 40),                            
-                            origin: new google.maps.Point(0, 0),                            
-                            anchor: new google.maps.Point(20,40)
-                          };
-                        var marker=new google.maps.Marker({
-                        position: newLatlng,
-                        map: map,
-                        icon: image,
-                        contentfix: '<div class="content"><div><h3>'+value.title+'</h3><div class="innercontent"><strong>durchschnittl. Ertrag: '+Math.round(((value.yield/100)/(value.acreage/100))*100)/100+' dt/ha</strong><br></div></div></div>',                        
-                        display: true,
-                        yield:value.yield/100,
-                        acreage:value.acreage/100
-                        });
+						
+						
+						if(typeof value.sorten == 'undefined'){
+							yieldTotal += value.yield/100;
+							acreageTotal += value.acreage/100;
+							var image = {
+								url: curIcon,                    
+								size: new google.maps.Size(80, 80),
+								scaledSize:new google.maps.Size(40, 40),                            
+								origin: new google.maps.Point(0, 0),                            
+								anchor: new google.maps.Point(20,40)
+							  };
+							
+							
+							var sortenContent = '<strong>Ergebnisse im Landkreis '+ value.title +'<br /><table border="0" class="overlay_table"><tr><td><strong>Sortenname</strong></td><td><strong>Ertrag dt/ha</strong></td><td><strong>Gesamtfläche</strong></td><td><strong>Teilnehmer</strong></td></tr>';
+							
+							 
+							
+							 jQuery.each(value.others, function(i, sorten) {
+								 
+								var flaeche = Math.round(((sorten.yield/100)/(sorten.acreage/100))*100)/100; 
+																 
+								var durchschnitt = '&oslash;';
+								 
+								if(i =='lsvrgt'){
+									 sorten.number = '';
+									 sorten.acreage = '';
+									 durchschnitt = '';
+									sorten.acreage = '';
+								}
+								 
+								 sortenContent += '<tr><td>'+ lookupArray[i] +'</td><td>'+ durchschnitt + ' '+ flaeche +'</td><td>'+ sorten.acreage +'</td><td>'+ sorten.number +'</td></tr>';
+							 });
+							
+							 sortenContent += '</table>';
+							
+							if(value.markertitle =='lsvrgt'){
+								sortenContent = '';
+							}
+							
+							var marker=new google.maps.Marker({
+							position: newLatlng,
+							map: map,
+							icon: image,
+							contentfix: '<div class="content"><div><h3>'+ lookupArray[value.markertitle] +'</h3><div class="innercontent"><strong>Ertrag an diesem Standort: '+Math.round(((value.yield/100)/(value.acreage/100))*100)/100+' dt/ha</strong><br><hr />'+ sortenContent +'</div></div></div>',                        
+							display: true,
+							yield:value.yield/100,
+							acreage:value.acreage/100
+							});
+				
+							
+							
+							
+						}else{
+							
+							 var sortenContent = '<table border="0" class="overlay_table"><tr><td><strong>Sortenname</strong></td><td><strong>ø Ertrag dt/ha</strong></td><td><strong>Gesamtfläche</strong></td><td><strong>Teilnehmer</strong></td></tr>';
+							
+							 jQuery.each(value.sorten, function(i, sorten) {
+								
+								 sortenContent += '<tr><td>'+ lookupArray[sorten.title] +'</td><td>'+ Math.round(((sorten.yield/100)/(sorten.acreage/100))*100)/100 +'</td><td>'+ sorten.acreage +'</td><td>'+ sorten.number +'</td></tr>';
+							 });
+							
+							 sortenContent += '</table>';
+							
+							 var image = {
+								url: curIcon,                    
+								size: new google.maps.Size(80, 80),
+								scaledSize:new google.maps.Size(40, 40),                            
+								origin: new google.maps.Point(0, 0),                            
+								anchor: new google.maps.Point(20,40)
+							  };
+							
+							var marker=new google.maps.Marker({
+							position: newLatlng,
+							map: map,
+							icon: image,
+							contentfix: '<div class="content"><div><h3>'+value.title+'</h3><div class="innercontent">'+ sortenContent +'</div></div></div>',            
+							display: true,
+							yield:value.yield/100,
+							acreage:value.acreage/100
+							});								 
+							
+						}
+						
+						
+						
+						
+						
                         markers.push(marker);
                         var markerEvent =  function (e) {
                             //map.setCenter(newLatlng);
@@ -545,9 +770,7 @@ var ertragskarte = (function () {
                           );  
                          
                     });                                     
-                    averageYield = Math.round(yieldTotal/acreageTotal*100)/100;
-                    jQuery('#averageTotal span').html(averageYield);
-                    google.maps.event.addListener(map, "idle", function (event) {                                                
+                      google.maps.event.addListener(map, "idle", function (event) {                                                
                             bounds = map.getBounds();
                             checkVisibleElements(markers, bounds);                        
                     });
@@ -562,7 +785,7 @@ var ertragskarte = (function () {
                     findClosest();                                        
                 },
                 error:function(e){
-                    console.log(e);
+                    
                 }
         });
     }
@@ -591,6 +814,6 @@ var ertragskarte = (function () {
 
 
 
-$(document).ready(function(jQuery){
+$(window).load(function(jQuery){
     ertragskarte.initialize();
 });

@@ -32,7 +32,7 @@ plugin.tx_ertragskarte_ertragskarte {
 
 
 page.includeJS.tx_ertragskarte_file1 = https://maps.googleapis.com/maps/api/js?key=AIzaSyBhhaaDitPwEYgmZGTElQZNLnB_LrSTIpw&libraries=places    
-page.includeJS.tx_ertragskarte_file2 = EXT:ertragskarte/Resources/Public/JS/jquery-3.1.1.min.js
+##page.includeJS.tx_ertragskarte_file2 = EXT:ertragskarte/Resources/Public/JS/jquery-3.1.1.min.js
 page.includeJS.tx_ertragskarte_file3 = EXT:ertragskarte/Resources/Public/JS/semantic.js
 page.includeJS.tx_ertragskarte_file4 = EXT:ertragskarte/Resources/Public/JS/main.js
 

@@ -13,31 +13,30 @@ in /Configuration/ExtensionBuilder/settings.yaml:
 Otherwise your changes will be overwritten the next time you save the extension in the extension builder
 
 <f:section name="main">
-<div class="content_teaser">
-<div class="ct_content">
 
-		<h4 class="t3_headline h2">Braugerste-Ertragsmesser</h4>
-		<div class="t3_richtext rte">
-			<p>Tragen Sie Ihren Ertrag im Braugersten-Ertragsmesser ein und erhalten Sie als eine der 800 ersten Teilnehmer einen Bierträger mit 6 verschiedenen Siegerbieren des European Beer Star! Hier geht es <a href="brauereien/">zu den Brauereien</a>. </p>
-			<p>Einfach Ihr Anbaugebiet in der Karte anklicken und Ihren Ertrag angeben! Ihr Ertrag wird als Gerstenähre auf der Karte sichtbar.</p>
-<p>Vergleichen Sie die Erträge von RGT PLANET in den Landessortenversuchen auf der Karte und überzeugen Sie sich vom Mehrertrag. </p>
-	</div>
-	
-
+    <div id="averageTotal" class="resultHeader">
+        <h3>Durchschnittsertrag Gesamt:</h3><div class="resultButton"><span></span> Tonnen/ha</div><br>        
+    </div>
+    <div id="average" class="resultHeader">
+        <h3>Durchschnittsertrag des sichtbaren Bereichs:</h3><div class="resultButton"><span></span> Tonnen/ha</div><br>
+    </div>
     
     <div id="legend" style="clear:both;">
-        <img src="typo3conf/ext/ertragskarte/Resources/Public/images/icon_lsv.png"  class="legendImg" style="width:30px;height:30px;" /> LSV-Ergebnisse | 
-        <img src="typo3conf/ext/ertragskarte/Resources/Public/images/icon_baywa.png"  class="legendImg" style="width:30px;height:30px;" > RGT Planet, GRACE und STEFFI | 
-        <img src="typo3conf/ext/ertragskarte/Resources/Public/images/icon_andere.png"  class="legendImg" style="width:30px;height:30px;" > weitere Sorten<br>
+        <img src="typo3conf/ext/ertragskarte/Resources/Public/images/yield-icon-reg.png"  class="legendImg"> von Nutzern gesetzte Marker | 
+        <img src="typo3conf/ext/ertragskarte/Resources/Public/images/yield-icon-own.png"  class="legendImg"> Ihre Marker (nur beim Setzen sichtbar) | 
+        <img src="typo3conf/ext/ertragskarte/Resources/Public/images/yield-icon-baywa.png"  class="legendImg"> Marker der BayWa AG<br>
     </div>
-    <div style="position:relative;width:100%;height:800px">
-
-<div id="map" style="width:100%;height:800px;position:absolute;">
+    <div style="position:relative;width:800px;height:800px">
+<div id="controls">
+<div id="searchBox" class="ui input">
+            <input id="pac-input" class="controls" type="text" placeholder="Ort, PLZ oder Straße">
+            <span></span>
+          </div>
+        </div>
+<div id="map" style="width:800px;height:800px;position:absolute;">
         
 </div>
 </div>
-	</div>
-	</div>
     <div class="ui modal" id="newMarkersModal">
         <i class="close icon"></i>
         <div class="ui header">
@@ -50,12 +49,7 @@ Otherwise your changes will be overwritten the next time you save the extension 
         <f:form action="create" controller="Markers" name="newMarkers" object="{newMarkers}" class="ui form" id="newMarkersForm" pageType="3010">
         
         <f:render partial="Markers/FormFields" />
-                <div class="frm-row">
-	<div class="colm colm12">
-               <input class="button btn-primary" type="submit" value="Ertragsdaten eintragen">
-                
-					</div>
-			</div>
+                <f:form.submit value="Neuen Marker einfügen" />
         </f:form>
 			</div>
         </div>

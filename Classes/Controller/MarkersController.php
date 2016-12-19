@@ -86,24 +86,7 @@ class MarkersController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         
         
     }
-    /**
-    * initialize create action
-    *
-    * @return void
-    */
-   public function initializeCreateAction() {
-       
-     if ($this->arguments->hasArgument('newMarkers')) {
-        
-        
-       $this->arguments->getArgument('newMarkers')->getPropertyMappingConfiguration()->allowProperties('acreage');
-       $this->arguments->getArgument('newMarkers')->getPropertyMappingConfiguration()->allowProperties('yield');
-       $this->arguments->getArgument('newMarkers')->getPropertyMappingConfiguration()->setTargetTypeForSubProperty('acreage', 'int');
-       $this->arguments->getArgument('newMarkers')->getPropertyMappingConfiguration()->setTargetTypeForSubProperty('yield', 'int');
-     }
-     
-     
-   }
+    
     /**
      * action create
      * 
@@ -113,18 +96,16 @@ class MarkersController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     public function createAction(\Df\Ertragskarte\Domain\Model\Markers $newMarkers)
     {
         
-        if(!$GLOBALS['TSFE']->loginUser){
-            echo(0);
-            return;
-        }
-        
-        $newMarkers->setAcreage(intval($this->request->getArgument('newMarkers')['acreage']*100));
-        $newMarkers->setYield(intval($this->request->getArgument('newMarkers')['yield']*100));
-        
-        $userObject = $this->userRepository->findByUid($GLOBALS['TSFE']->fe_user->user['uid']);        
-        $newMarkers->setUser($userObject);
+        //if(!$GLOBALS['TSFE']->loginUser){
+          //  echo(0);
+          //  return;
+        //}
+        //
+        //$userObject = $this->userRepository->findByUid($GLOBALS['TSFE']->fe_user->user['uid']);        
+        //$newMarkers->setUser($userObject);
         
         $this->markersRepository->add($newMarkers);
+        $this->sendMail($newMarkers);
         $this->addFlashMessage('Der Marker wurde erzeugt', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);        
         
         //$this->redirect('list');
@@ -180,4 +161,22 @@ class MarkersController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         $this->redirect('list');
     }
 
+    private function sendMail(\Df\Ertragskarte\Domain\Model\Markers $newMarkers){
+        $anrede = $newMarkers->getGender() == 'Frau' ? 'Sehr geehrte Frau' : 'Sehr geehrter Herr';
+        $message = (new \TYPO3\CMS\Core\Mail\MailMessage())
+        ->setSubject('Ihre Teilnahme am Braugersten-Ertragsmesser von ProBiervielfalt.de')
+        ->setFrom(array('info@probiervielfalt.de' => 'info@probiervielfalt.de'))
+        ->setTo(array($newMarkers->getEmail() => $newMarkers->getFirstname().' '.$newMarkers->getLastname()))
+        ->setBody($anrede.' '.$newMarkers->getLastname().',
+
+vielen Dank für Ihre Teilnahme am Braugersten-Ertragsmesser von ProBiervielfalt.de.
+
+Sofern Sie zu den ersten 800 Teilnehmern gehören, werden wir zeitnah Verbindung mit Ihnen aufnehmen und Ihnen die Auswahl der Siegerbiere zukommen lassen.
+
+Mit freundlichen Grüßen
+Ihre BayWa AG
+');
+        $message->send();
+        
+    }
 }

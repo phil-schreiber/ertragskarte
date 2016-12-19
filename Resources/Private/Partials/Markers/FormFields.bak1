@@ -1,0 +1,112 @@
+
+<div class="frm-row">
+	<div class="section colm colm12">
+		<div class="spacer-b30" style="margin-top: 20px;">
+			<div class="tagline"><span>Bitte wählen Sie Ihre Braugerste-Sorte aus</span></div>
+		
+		</div>
+	</div>
+</div>                                
+<div class="frm-row">
+	<div class="section colm colm12">
+		<label class="field select" for="tx_ertragskarte_markers_title">
+			
+			<select name="tx_ertragskarte_markers[newMarkers][title]" class="delivery_field" id="tx_ertragskarte_markers_title" >
+				<option value="">-----</option>
+				<option value="">RGT PLANET</option>
+				<option  value="GRACE">GRACE</option>
+				<option  value="STEFFI">STEFFI</option>
+				<option  value="Marthe">Marthe</option>
+				<option  value="Avalon">Avalon</option>
+				<option  value="Quench">Quench</option>
+				<option  value="Propino">Propino</option>
+				<option  value="Ventina">Ventina</option>
+				<option  value="Solist">Solist</option>
+				<option  value="Catamaran">Catamaran</option>
+				<option  value="Cervinia">Cervinia</option>
+				<option  value="Ventina">Ventina</option>
+			</select>
+			<i class="arrow double"></i>                             
+		</label>
+	</div><!-- end section -->
+</div>
+<div class="frm-row">
+	<div class="section colm colm12">
+		<div class="spacer-b30" style="margin-top: 20px;">
+			<div class="tagline"><span>Position auf Basis Ihres Klicks auf der Karte</span></div>
+		
+		</div>
+	</div>
+</div>
+<div class="frm-row">
+
+	<div class="colm colm6">
+
+		<div class="section">
+			<label class="field" for="tx_ertragskarte_markers_lng">
+				<input type="text" name="tx_ertragskarte_markers[newMarkers][lng]" id="tx_ertragskarte_markers_lng" class="gui-input" placeholder="">
+			</label>
+		</div>
+	</div> 
+                             
+	<div class="colm colm6">
+
+		<div class="section">
+			<label class="field" for="tx_ertragskarte_markers_ltd">
+				<input type="text" name="tx_ertragskarte_markers[newMarkers][ltd]" id="tx_ertragskarte_markers_ltd" class="gui-input" placeholder="">
+			</label>
+		</div>
+	</div>                                                                                                                                           
+</div>   
+                             
+<div class="frm-row">
+	<div class="section colm colm12">
+		<div class="spacer-b30" style="margin-top: 20px;">
+			<div class="tagline"><span>Postleitzahl der Position Ihres Klicks</span></div>
+		
+		</div>
+	</div>
+</div>
+<div class="frm-row">
+	<div class="colm colm12">
+
+		<div class="section">
+			<label class="field" for="tx_ertragskarte_markers_zip">
+				<input type="text" name="tx_ertragskarte_markers[newMarkers][zip]" id="tx_ertragskarte_markers_zip" class="gui-input" placeholder="">
+			</label>
+		</div>
+	</div>                                                                                                                                           
+</div> 
+                             
+                                                                                                                  
+<div class="frm-row">
+	<div class="section colm colm12">
+		<div class="spacer-b30" style="margin-top: 20px;">
+			<div class="tagline"><span>Angaben zu Fläche und Ertrag</span></div>
+		
+		</div>
+	</div>
+</div>
+<div class="frm-row">
+	<div class="colm colm6">
+
+		<div class="section">
+			<label class="field" for="tx_ertragskarte_markers_acreage">
+				<input type="text" name="tx_ertragskarte_markers[newMarkers][acreage]" id="tx_ertragskarte_markers_acreage" class="gui-input" placeholder="Flächengröße als Ganzzahl in ha ">
+			</label>
+		</div>
+	</div>                                                                                                                                           
+	<div class="colm colm6">
+
+		<div class="section">
+			<label class="field" for="tx_ertragskarte_markers_yield">
+				<input type="text" name="tx_ertragskarte_markers[newMarkers][yield]" id="tx_ertragskarte_markers_yield" class="gui-input" placeholder="Flächengröße als Ganzzahl in ha ">
+			</label>
+		</div>
+	</div>
+</div>                                                                                                                                                                   <input type="hidden" name="tx_ertragskarte_markers[newMarkers][nr]">
+<input type="text" name="tx_ertragskarte_markers[newMarkers][street]">
+<input type="text" name="tx_ertragskarte_markers[newMarkers][place]">
+
+
+

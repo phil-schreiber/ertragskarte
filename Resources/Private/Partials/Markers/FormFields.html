@@ -1,37 +1,188 @@
 
-<label for="title">
-	<f:translate key="tx_ertragskarte_domain_model_markers.title" />
-</label><br />
-	<f:form.textfield property="title" /><br />
-<label for="lng">
-	<f:translate key="tx_ertragskarte_domain_model_markers.lng" />
-</label><br />
-	<f:form.textfield property="lng" /><br />
-<label for="ltd">
-	<f:translate key="tx_ertragskarte_domain_model_markers.ltd" />
-</label><br />
-	<f:form.textfield property="ltd" /><br />
-<label for="place">
-	<f:translate key="tx_ertragskarte_domain_model_markers.place" />
-</label><br />
-	<f:form.textfield property="place" /><br />
-<label for="zip">
-	<f:translate key="tx_ertragskarte_domain_model_markers.zip" />
-</label><br />
-	<f:form.textfield property="zip" /><br />
-<label for="street">
-	<f:translate key="tx_ertragskarte_domain_model_markers.street" />
-</label><br />
-	<f:form.textfield property="street" /><br />
-<label for="nr">
-	<f:translate key="tx_ertragskarte_domain_model_markers.nr" />
-</label><br />
-	<f:form.textfield property="nr" /><br />
-<label for="acreage">
-	<f:translate key="tx_ertragskarte_domain_model_markers.acreage" />
-</label><br />	
-        <input type="number" name="tx_ertragskarte_markers[newMarkers][acreage]"   step="0.01" /><br />
-<label for="yield">
-	<f:translate key="tx_ertragskarte_domain_model_markers.yield" />
-</label><br />
-	<input type="number" name="tx_ertragskarte_markers[newMarkers][yield]"   step="0.01" /><br />
+
+
+<div class="frm-row">
+	<div class="section colm colm12">
+		<div class="spacer-b30" style="margin-top: 20px;">
+			<div class="tagline"><span>Bitte wählen Sie Ihre Braugerste-Sorte aus</span></div>
+		
+		</div>
+	</div>
+</div>                                
+<div class="frm-row">
+	<div class="section colm colm12">
+		<label class="field select" for="tx_ertragskarte_markers_title">
+			<f:form.select property="title"  class="delivery_field" id="tx_ertragskarte_markers_title" options="{rgtplanet: 'RGT PLANET', grace:'GRACE',steffi:'STEFFI',marthe:'Marthe',avalon:'Avalon',quench:'Quench',propino:'Propino',ventina:'Ventina',solist:'Solist',catamaran:'Catamaran',cervinia:'Cervinia',sonstige:'Sonstige'}" />
+			
+			
+		
+			<i class="arrow double"></i>                             
+		</label>
+	</div><!-- end section -->
+</div>
+
+<div class="frm-row">
+	<div class="section colm colm12">
+		<div class="spacer-b30" style="margin-top: 20px;">
+			<div class="tagline"><span>Angaben zu Fläche und Ertrag</span></div>
+		
+		</div>
+	</div>
+</div>
+<div class="frm-row">
+	<div class="colm colm6">
+
+		<div class="section">
+			<label class="field" for="tx_ertragskarte_markers_acreage">
+			<f:form.textfield property="acreage" id="tx_ertragskarte_markers_acreage" class="gui-input" placeholder="Anbaufläche Braugerste in ha"/>
+				
+			</label>
+		</div>
+	</div>                                                                                                                                           
+	<div class="colm colm6">
+
+		<div class="section">
+			<label class="field" for="tx_ertragskarte_markers_yield">
+			<f:form.textfield property="yield" id="tx_ertragskarte_markers_yield" class="gui-input" placeholder="Ertrag Ihrer angebauten Braugerste in dt aus 2016"/>
+
+			</label>
+		</div>
+	</div>
+</div> 
+
+
+<div class="frm-row">
+	<div class="section colm colm12">
+		<div class="spacer-b30" style="margin-top: 20px;">
+			<div class="tagline"><span>Ihre Daten für die Teilnahme am Gewinnspiel</span></div>
+		
+		</div>
+		
+	</div>
+	<div class="section colm colm12"><p>Die von Ihnen angegebenen Daten werden <strong>nicht</strong> im Braugerste-Ertragsmesser angezeigt sondern dienen lediglich der Durchführung des Gewinnspiels.</div>
+</div>
+
+<div class="frm-row">
+
+	<div class="colm colm12">
+
+		<div class="section">
+			<label class="field select" for="tx_ertragskarte_markers_gender">
+			<f:form.select property="gender"  class="delivery_field" id="tx_ertragskarte_markers_gender" options="{Herr: 'Herr', Frau:'Frau'}" />	
+			<i class="arrow double"></i>                             
+		</label>
+		</div>
+	</div> 
+</div> 
+
+<div class="frm-row">                            
+	<div class="colm colm6">
+
+		<div class="section">
+			<label class="field" for="tx_ertragskarte_markers_firstname">
+				<f:form.textfield property="firstname" id="tx_ertragskarte_markers_firstname" class="gui-input" placeholder="Vorname*"/>
+			</label>
+		</div>
+	</div> 
+	<div class="colm colm6">
+
+		<div class="section">
+			<label class="field" for="tx_ertragskarte_markers_lastname">
+				<f:form.textfield property="lastname" id="tx_ertragskarte_markers_lastname" class="gui-input" placeholder="Nachname*"/>
+			</label>
+		</div>
+	</div>                                                                                                                                           
+</div>   
+
+<div class="frm-row">                            
+	<div class="colm colm12">
+
+		<div class="section">
+			<label class="field" for="tx_ertragskarte_markers_street">
+				<f:form.textfield property="street" id="tx_ertragskarte_markers_street" class="gui-input" placeholder="Straße*"/>
+			</label>
+		</div>
+	</div> 
+	                                                                                                                                           
+</div>   
+
+<div class="frm-row">                            
+	<div class="colm colm6">
+
+		<div class="section">
+			<label class="field" for="tx_ertragskarte_markers_firstname">
+				<f:form.textfield property="zip" id="tx_ertragskarte_markers_zip" class="gui-input" placeholder="Postleitzahl*"/>
+			</label>
+		</div>
+	</div> 
+	<div class="colm colm6">
+
+		<div class="section">
+			<label class="field" for="tx_ertragskarte_markers_place">
+				<f:form.textfield property="place" id="tx_ertragskarte_markers_place" class="gui-input" placeholder="Ort*"/>
+			</label>
+		</div>
+	</div>                                                                                                                                           
+</div>                           
+                           
+<div class="frm-row">                            
+	<div class="colm colm12">
+
+		<div class="section">
+			<label class="field" for="tx_ertragskarte_markers_phone">
+				<f:form.textfield property="nr" id="tx_ertragskarte_markers_phone" class="gui-input" placeholder="Telefon"/>
+			</label>
+		</div>
+	</div> 
+	                                                                                                                                           
+</div>                              
+                            
+<div class="frm-row">                            
+	<div class="colm colm12">
+
+		<div class="section">
+			<label class="field" for="tx_ertragskarte_markers_email">
+				<f:form.textfield property="email" id="tx_ertragskarte_markers_email" class="gui-input" placeholder="E-Mail*"/>
+			</label>
+		</div>
+	</div> 
+	                                                                                                                                           
+</div>   
+                             
+<div class="frm-row">
+	<div class="section colm colm12">
+		<div class="spacer-b30" style="margin-top: 20px;">
+			<div class="tagline"><span>Teilnahmebedingungen und Datenschutz</span></div>
+		
+		</div>
+	</div>
+</div>
+
+<div class="frm-row">
+								 <div class="section colm colm12">
+                                        <div class="option-group field">
+                                            <label class="option" style="font-weight:normal">
+                                                <f:form.checkbox property="newsletter" value="Newsletter"/>
+                                                 <span class="checkbox"></span> 
+                                                Ich möchte per E-Mail über aktuelle Informationen rund um Braugerste und Hopfen auf dem Laufenden gehalten werden. Diese Einwilligung kann ich jederzeit widerrufen.         
+                                            </label>
+                                        </div>
+                              </div>
+								 </div>
+                                                                                                                 
+
+<div class="frm-row">
+								 <div class="section colm colm12">
+                                        <div class="option-group field">
+                                            <label class="option" style="font-weight:normal">
+                                                <f:form.checkbox property="terms" value="Bestimmungen"/>
+                                                 <span class="checkbox"></span> 
+												Ich habe die <a href="sonstiges/datenschutz/" target="_blank">Datenschutzbestimmungen</a> und <a href="braugersten-ertragsmesser/teilnahmebedingungen/" target="_blank">Teilnahmebedingungen</a> gelesen und stimme ihnen zu.
+                                            </label>
+                                        </div>
+                              </div>
+								 </div>                                                                                                                  
+                                                                                                                                                                                                                                                                                                                                                      
+<f:form.hidden property="lng"/>
+<f:form.hidden property="ltd"/>
+

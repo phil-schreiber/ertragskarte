@@ -37,11 +37,11 @@ class MarkersRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         
         $storagePids = $query->getQuerySettings()->getStoragePageIds();
         
-        $sql = 'SELECT SUM(markers.yield) AS yield, SUM(markers.acreage) AS acreage, regions.title, regions.ltd, regions.lng '
+        $sql = 'SELECT markers.yield AS yield,markers.acreage AS acreage, markers.title AS markertitle, regions.title, markers.ltd, markers.lng '
                 . 'FROM tx_ertragskarte_domain_model_markers AS markers '
                 . 'LEFT JOIN tx_ertragskarte_domain_model_regions_zipcodes_mm AS lookup ON markers.zip = lookup.uid_foreign '
                 . 'LEFT JOIN tx_ertragskarte_domain_model_regions AS regions on regions.uid=lookup.uid_local '
-                . 'WHERE markers.pid IN ('.implode(',',$storagePids).') AND markers.zip <> 0 GROUP BY regions.uid';
+                . 'WHERE markers.pid IN ('.implode(',',$storagePids).') AND markers.deleted = 0 AND markers.zip <> 0';
         $query->statement($sql);
 
         $result = $query->execute(true);

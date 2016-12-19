@@ -23,10 +23,10 @@ return array(
 		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('ertragskarte') . 'Resources/Public/Icons/tx_ertragskarte_domain_model_markers.gif'
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, cruser_id, hidden, title, lng, ltd, place, zip, street, nr, acreage, yield, user',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, cruser_id, hidden, title, lng, ltd, place, zip, street, nr, acreage, yield, user,gender,firstname,lastname,newsletter,terms,email',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title, lng, ltd, place, zip, street, nr, acreage, yield, user, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'),
+		'1' => array('showitem' => 'sys_language_uid;;;;1-1-1, l10n_parent, l10n_diffsource, hidden;;1, title, lng, ltd, place, zip, street, nr, acreage, yield, user,gender,firstname,lastname,newsletter,terms,email, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -187,6 +187,60 @@ return array(
 		'nr' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:ertragskarte/Resources/Private/Language/locallang_db.xlf:tx_ertragskarte_domain_model_markers.nr',
+			'config' => array(
+				'type' => 'input',
+				'size' => 30,
+				'eval' => 'trim'
+			),
+		),
+	'gender' => array(
+			'exclude' => 1,
+			'label' => 'Anrede',
+			'config' => array(
+				'type' => 'input',
+				'size' => 30,
+				'eval' => 'trim'
+			),
+		),
+	'firstname' => array(
+			'exclude' => 1,
+			'label' => 'Vorname',
+			'config' => array(
+				'type' => 'input',
+				'size' => 30,
+				'eval' => 'trim'
+			),
+		),
+	'lastname' => array(
+			'exclude' => 1,
+			'label' => 'Nachname',
+			'config' => array(
+				'type' => 'input',
+				'size' => 30,
+				'eval' => 'trim'
+			),
+		),
+	'newsletter' => array(
+			'exclude' => 1,
+			'label' => 'Newsletter',
+			'config' => array(
+				'type' => 'input',
+				'size' => 30,
+				'eval' => 'trim'
+			),
+		),
+	'terms' => array(
+			'exclude' => 1,
+			'label' => 'Terms',
+			'config' => array(
+				'type' => 'input',
+				'size' => 30,
+				'eval' => 'trim'
+			),
+		),
+	'email' => array(
+			'exclude' => 1,
+			'label' => 'E-Mail',
 			'config' => array(
 				'type' => 'input',
 				'size' => 30,

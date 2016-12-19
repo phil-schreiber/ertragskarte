@@ -52,27 +52,31 @@ class ErtragskarteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
         
         $this->view->assign('markerss', $markers);
         $markerArray=array();
-        foreach($markers as $marker){            
-            $marker->curUser=0;
-            $usergroupIds=array();
-            $usergroups=$marker->getUser()->getUsergroup();
-            foreach($usergroups as $usergroup){
-                $usergroupIds[] = $usergroup->getUid();                
-            }            
-            
-            if(in_array($this->settings['homeUserGroupId'], $usergroupIds)){
-                $marker->curUser=-1;                
-                $markerArray[]= json_encode($marker);                
-            }                        
-        }    
         
         foreach($aggregateMarkers as $aggregateMarker){
-            if($aggregateMarker["ltd"] != ""){
-                $aggregateMarker->curUser=0;
-                $markerArray[]= json_encode($aggregateMarker);                
-            }
+            
+			$regionsArray[$aggregateMarker['title']][$aggregateMarker['markertitle']]['acreage'] += $aggregateMarker['acreage'];
+			$regionsArray[$aggregateMarker['title']][$aggregateMarker['markertitle']]['yield'] += $aggregateMarker['yield'];
+			$regionsArray[$aggregateMarker['title']][$aggregateMarker['markertitle']]['number'] += 1;	
+	
         }
-                
+		
+		foreach($aggregateMarkers as $aggregateMarker){
+			
+			$tempArray = json_decode(json_encode($aggregateMarker),1);
+			$tempArray['others'] = $regionsArray[$aggregateMarker['title']];
+			
+			$markerTempArray[] = $tempArray;
+			
+		}
+		
+
+		foreach($markerTempArray AS $key => $value){
+			$markerArray[]= json_encode($value);
+		}
+		
+
+              
         if(count($this->request->getArguments()) > 0){
             echo('['.implode(',',$markerArray).']');
             die();
@@ -91,7 +95,7 @@ class ErtragskarteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCon
         $this->view->assign('markerss', $markers);
         $markerArray=array();
         foreach($markers as $marker){            
-            $marker->curUser=0;
+			$marker->curUser=0;
             if($marker->getUser() && count($GLOBALS['TSFE']->fe_user->user) >0){
                 
                 if($marker->getUser()->getUid()===$GLOBALS['TSFE']->fe_user->user["uid"]){
