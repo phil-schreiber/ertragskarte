@@ -40,7 +40,7 @@ var ertragskarte = (function () {
   if (typeof(Number.prototype.toRadians) === "undefined") {
     Number.prototype.toRadians = function() {
       return this * Math.PI / 180;
-    }
+    };
   }
       
     var range = function (start, count) {
@@ -48,7 +48,7 @@ var ertragskarte = (function () {
               .map(function (element, index) { 
                        return index + start;  
                    });
-    }
+    };
     var getHaversineDistance = function (lat1, lon1, lat2, lon2){
         var R = 6371; // Radius of the earth in km
         var dLat = (lat2 - lat1) * Math.PI / 180;  // deg2rad below
@@ -57,7 +57,7 @@ var ertragskarte = (function () {
            (1 - Math.cos(dLon))/2;
 
         return R * 2 * Math.asin(Math.sqrt(a));
-   }
+   };
    
    var addMarkerListener = function (){
            /*jQuery('body').on('mouseenter touchstart','.availablesTrigger',function(e){        
@@ -76,13 +76,13 @@ var ertragskarte = (function () {
                hideOverlay();
             });
           
-      }
+      };
    
    var hideOverlay = function (e){                       
        jQuery('#overlay').addClass('hide').html('');
        jQuery('#overlay').offset({ top: 0, left: 0 });
        return false;
-   }
+   };
 
     var InfoBox=function (opts) {
         google.maps.OverlayView.call(this);
@@ -113,7 +113,7 @@ var ertragskarte = (function () {
         // that we can display it. This will trigger calls to panes_changed and
         // draw.
         this.setMap(this.map_);
-    }
+    };
     /* InfoBox extends GOverlay class from the Google Maps API
      */
     InfoBox.prototype = new google.maps.OverlayView();
@@ -132,11 +132,15 @@ var ertragskarte = (function () {
         // Creates the element if it doesn't exist already.
         
         this.createElement();
-        if (!this.div_) return;
+        if (!this.div_){
+			return;	
+		} 
         // Calculate the DIV coordinates of two opposite corners of our bounds to
         // get the size and position of our Bar
         var pixPosition = this.getProjection().fromLatLngToDivPixel(this.latlng_);
-        if (!pixPosition) return;
+        if (!pixPosition){
+			return;	
+		} 
         // Now position our DIV based on the DIV coordinates of our bounds
         this.div_.style.width = this.width_ + "px";
         this.div_.style.left = (pixPosition.x + this.offsetHorizontal_) + "px";
@@ -159,9 +163,9 @@ var ertragskarte = (function () {
             // This does not handle changing panes. You can set the map to be null and
             // then reset the map to move the div.
             div = this.div_ = document.createElement("div");
-                div.className = "infobox"
+                div.className = "infobox";
             var contentDiv = document.createElement("div");
-                contentDiv.className = "content"
+                contentDiv.className = "content";
                 contentDiv.innerHTML = this.content;
             var closeBox = document.createElement("div");
                 closeBox.className = "close";
@@ -242,7 +246,7 @@ var ertragskarte = (function () {
         var centerX = center.lng() - shiftLng;
         var centerY = center.lat() - shiftLat;
         // center the map to the new shifted center
-        map.setCenter(new google.maps.LatLng(centerY, centerX));
+        //map.setCenter(new google.maps.LatLng(centerY, centerX));
         // Remove the listener after panning is complete.
         google.maps.event.removeListener(this.boundsChangedListener_);
         this.boundsChangedListener_ = null;
@@ -322,10 +326,81 @@ var ertragskarte = (function () {
             });
             markers.push(marker);
        }
-    });
-    
-    
+    });        
    }; 
+   
+   var placeUserMarker = function(userdata){
+       var pairs = userdata.split('&');
+        var obj = {}, p, idx;
+        for (var i=0, n=pairs.length; i < n; i++) {
+                p = pairs[i].split('=');
+                idx = p[0];
+
+                if (idx.indexOf("[]") == (idx.length - 2)) {
+                        // Eh um vetor
+                        var ind = idx.substring(0, idx.length-2)
+                        if (obj[ind] === undefined) {
+                                obj[ind] = [];
+                        }
+                        obj[ind].push(p[1]);
+                }
+                else {
+                        obj[idx] = p[1];
+                }
+        }
+    var icon =['typo3conf/ext/ertragskarte/Resources/Public/images/icon_rgt.png','typo3conf/ext/ertragskarte/Resources/Public/images/icon_lsv.png','typo3conf/ext/ertragskarte/Resources/Public/images/icon_baywa.png','typo3conf/ext/ertragskarte/Resources/Public/images/icon_andere.png'];
+        var lookupArray = { 
+                            lsvrgt: 'RGT PLANET - LSV-Ergebnis',
+                            rgtplanet: 'RGT PLANET', 
+                            grace:'GRACE',
+                            steffi:'STEFFI',						
+                            marthe:'Marthe',						
+                            avalon:'Avalon',
+                            quench:'Quench',
+                            propino:'Propino',
+                            ventina:'Ventina',
+                            solist:'Solist',
+                            catamaran:'Catamaran',
+                            cervinia:'Cervinia',
+                            sonstige:'Sonstige'
+			};
+        
+        var curIcon = icon[3];				
+        if(obj["tx_ertragskarte_markers%5BnewMarkers%5D%5Btitle%5D"]=='lsvrgt'){
+            curIcon = icon[1];
+        }else if(obj["tx_ertragskarte_markers%5BnewMarkers%5D%5Btitle%5D"] =='steffi' || obj["tx_ertragskarte_markers%5BnewMarkers%5D%5Btitle%5D"] =='grace' || obj["tx_ertragskarte_markers%5BnewMarkers%5D%5Btitle%5D"] =='rgtplanet'){
+            curIcon = icon[2];
+        }
+        var image = {
+                    url: curIcon,                    
+                    size: new google.maps.Size(80, 80),
+                    scaledSize:new google.maps.Size(40, 40),                            
+                    origin: new google.maps.Point(0, 0),                            
+                    anchor: new google.maps.Point(20,40)
+                };
+        var newLatLng = new google.maps.LatLng(obj["tx_ertragskarte_markers%5BnewMarkers%5D%5Bltd%5D"],obj["tx_ertragskarte_markers%5BnewMarkers%5D%5Blng%5D"]);
+        
+        var newmarker=new google.maps.Marker({
+                        position: newLatLng,
+                        map: map,
+                        icon: image,
+                        contentfix: '<div class="content"><div><h3>'+ lookupArray[obj["tx_ertragskarte_markers%5BnewMarkers%5D%5Btitle%5D"]] +' / Ihre Gerste</h3><div class="innercontent"><strong>Ihr Ertrag an diesem Standort: '+obj["tx_ertragskarte_markers%5BnewMarkers%5D%5Byield%5D"]+'/'+obj["tx_ertragskarte_markers%5BnewMarkers%5D%5Bacreage%5D"]+' dt</strong><br></div></div></div>',                        
+                        display: true
+                    });
+        var markerEvent =  function (e) {                                                        
+                        new InfoBox({
+                            latlng: newLatLng,
+                            map: map,
+                            content: newmarker.contentfix
+                            }); 
+                        };
+        google.maps.event.addListener(newmarker, 'click',
+             markerEvent
+          );
+        google.maps.event.addListener(newmarker, 'mouseover',
+             markerEvent
+          );              
+   };
  
   var checkVisibleElements = function(elementsArray, bounds) {
         //checks if marker is within viewport and displays the marker accordingly - triggered by google.maps.event "idle" on the map Object
@@ -444,6 +519,8 @@ var ertragskarte = (function () {
 					  if(response==1){
 					  jQuery('.ui.modal').modal('hide');
 					  jQuery('#newMarkersModalSuccess').modal('show');
+						  buildItNow();
+                                                  placeUserMarker(formData);
 					  }else{
 						jQuery('.ui.modal').modal('hide'); 
 						jQuery("#newMarkersModalFailure .content").html("Sie müssen sich anmelden, um Marker setzen zu können.");
@@ -620,7 +697,7 @@ var ertragskarte = (function () {
             map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(zoomControlDiv);
               
             jQuery('#localize').show();
-            addSearchListener();
+            /*addSearchListener();*/
             addMarkerListener();         
             addGeneralListener();
           
@@ -685,7 +762,7 @@ var ertragskarte = (function () {
 								 
 								var flaeche = Math.round(((sorten.yield/100)/(sorten.acreage/100))*100)/100; 
 																 
-								var durchschnitt = '&oslash;';
+								var durchschnitt = 'ø';
 								 
 								if(i =='lsvrgt'){
 									 sorten.number = '';
@@ -795,9 +872,9 @@ var ertragskarte = (function () {
      
   var initialize= function(){
       bounds = new google.maps.LatLngBounds()
-      input = jQuery('#pac-input').get(0);
+      /*input = jQuery('#pac-input').get(0);
       searchBox = new google.maps.places.Autocomplete(input,searchBoxOptions);
-      
+      */
       setHombase();      
       buildItNow();
   };

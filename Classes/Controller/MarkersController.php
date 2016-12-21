@@ -164,7 +164,7 @@ class MarkersController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     private function sendMail(\Df\Ertragskarte\Domain\Model\Markers $newMarkers){
         $anrede = $newMarkers->getGender() == 'Frau' ? 'Sehr geehrte Frau' : 'Sehr geehrter Herr';
         $message = (new \TYPO3\CMS\Core\Mail\MailMessage())
-        ->setSubject('Ihre Teilnahme am Braugersten-Ertragsmesser von ProBiervielfalt.de')
+		->setSubject('Ihre Teilnahme am Braugersten-Ertragsmesser von ProBiervielfalt.de')	
         ->setFrom(array('info@probiervielfalt.de' => 'info@probiervielfalt.de'))
         ->setTo(array($newMarkers->getEmail() => $newMarkers->getFirstname().' '.$newMarkers->getLastname()))
         ->setBody($anrede.' '.$newMarkers->getLastname().',
