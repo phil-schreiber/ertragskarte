@@ -10,7 +10,7 @@
 
 var ertragskarte = (function () {
   var debug = false;
-  var listUrl = ["http://localhost/ertragskarte/index.php?id=1&type=3000&no_cache=1&tx_ertragskarte_ertragskarte%5Baction%5D=aggregate&tx_ertragskarte_ertragskarte%5Bcontroller%5D=Ertragskarte","http://probieren.denkfabrik-entwicklung.de/index.php?id=57&type=3000&no_cache=1&tx_ertragskarte_ertragskarte%5Baction%5D=aggregate&tx_ertragskarte_ertragskarte%5Bcontroller%5D=Ertragskarte"];
+  var listUrl = ["http://localhost/ertragskarte/index.php?id=1&type=3000&no_cache=1&tx_ertragskarte_ertragskarte%5Baction%5D=aggregate&tx_ertragskarte_ertragskarte%5Bcontroller%5D=Ertragskarte","/index.php?id=57&type=3000&no_cache=1&tx_ertragskarte_ertragskarte%5Baction%5D=aggregate&tx_ertragskarte_ertragskarte%5Bcontroller%5D=Ertragskarte"];
   var input;
   var bounds;
   var yieldTotal=0;
@@ -484,10 +484,18 @@ var ertragskarte = (function () {
         
   };
   var addGeneralListener = function(){
-    google.maps.event.addListener(map, 'mousedown', function(event) {
-        
-            placeMarker(event.latLng);        
-    });  
+      google.maps.event.addListener(map, 'click', function(event) {
+
+                placeMarker(event.latLng);        
+        });  
+    /*if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) { 
+ 
+        google.maps.event.addListener(map, 'mousedown', function(event) {
+
+                placeMarker(event.latLng);        
+        });  
+           // Touch events are supported
+    }*/
     
     
     jQuery("#newMarkersForm").submit(function(e){
