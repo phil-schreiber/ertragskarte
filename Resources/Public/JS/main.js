@@ -173,7 +173,7 @@ var ertragskarte = (function () {
             div.appendChild(closeBox);
 
            
-            google.maps.event.addDomListener(closeBox, 'click', removeInfoBox(this));
+            google.maps.event.addDomListener(closeBox, 'mousedown', removeInfoBox(this));
             function removeInfoBox(ib) {
                 return function () {
                     event.stopPropagation();
@@ -301,8 +301,9 @@ var ertragskarte = (function () {
     }
     
   var placeMarker = function (location) {
-    jQuery('#newMarkersForm input[name*="[lng]"').val(location.lng());
-    jQuery('#newMarkersForm input[name*="[ltd]"').val(location.lat());
+    jQuery('#newMarkersForm input[name*="[lng]"]').val(location.lng());
+    
+    jQuery('#newMarkersForm input[name*="[ltd]"]').val(location.lat());
     jQuery.ajax({
        type:'POST',
        dataType: 'JSON',
@@ -322,7 +323,7 @@ var ertragskarte = (function () {
             var marker = new google.maps.Marker({
                 position: location, 
                 map: map,
-                icon: "typo3conf/ext/ertragskarte/Resources/Public/images/yield-icon-own.png"
+                icon: "typo3conf/ext/ertragskarte/Resources/Public/images/icon_rgt.png"
             });
             markers.push(marker);
        }
@@ -384,7 +385,7 @@ var ertragskarte = (function () {
                         position: newLatLng,
                         map: map,
                         icon: image,
-                        contentfix: '<div class="content"><div><h3>'+ lookupArray[obj["tx_ertragskarte_markers%5BnewMarkers%5D%5Btitle%5D"]] +' / Ihre Gerste</h3><div class="innercontent"><strong>Ihr Ertrag an diesem Standort: '+obj["tx_ertragskarte_markers%5BnewMarkers%5D%5Byield%5D"]+'/'+obj["tx_ertragskarte_markers%5BnewMarkers%5D%5Bacreage%5D"]+' dt</strong><br></div></div></div>',                        
+                        contentfix: '<div class="content"><div><h3>'+ lookupArray[obj["tx_ertragskarte_markers%5BnewMarkers%5D%5Btitle%5D"]] +' / Ihre Gerste</h3><div class="innercontent"><strong>Ihr Ertrag an diesem Standort: '+obj["tx_ertragskarte_markers%5BnewMarkers%5D%5Byield%5D"]+' dt</strong><br></div></div></div>',                        
                         display: true
                     });
         var markerEvent =  function (e) {                                                        
@@ -399,7 +400,8 @@ var ertragskarte = (function () {
           );
         google.maps.event.addListener(newmarker, 'mouseover',
              markerEvent
-          );              
+          ); 
+        map.setCenter(newLatLng);
    };
  
   var checkVisibleElements = function(elementsArray, bounds) {
@@ -482,17 +484,12 @@ var ertragskarte = (function () {
         
   };
   var addGeneralListener = function(){
-    google.maps.event.addListener(map, 'click', function(event) {
-        //if(isLoggedIn()){
-            placeMarker(event.latLng);
-        //}else{
-          //jQuery("#newMarkersModalFailure .content").html("Sie müssen sich anmelden, um Marker setzen zu können.");
-          //jQuery("#newMarkersModalFailure").modal('show');
-        //}
+    google.maps.event.addListener(map, 'mousedown', function(event) {
         
-        
-        
+            placeMarker(event.latLng);        
     });  
+    
+    
     jQuery("#newMarkersForm").submit(function(e){
        e.preventDefault();
        
@@ -877,6 +874,9 @@ var ertragskarte = (function () {
       */
       setHombase();      
       buildItNow();
+      jQuery('.modal').modal({
+          context: ".page.content_outer"
+        });
   };
   
   
